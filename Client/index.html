@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <base href="/">
+    <title>App name</title>
+
+    <link rel="stylesheet" href="style/main.css"/>
+
+</head>
+<body>
+
+<div id="app-container" ng-include="'/html/app.html'">
+    Loading app...
+</div>
+
+<!--external dependencies-->
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<!--app dependencies-->
+<script src="js/app.js"></script>
+<script src="js/router.js"></script>
+<script src="js/config/develop.js"></script>
+<script src="js/controllers.js"></script>
+<script src="js/directives.js"></script>
+<script src="js/services.js"></script>
+</body>
+</html>
