@@ -405,12 +405,12 @@ Temporary Items
 # .idea/misc.xml
 # *.ipr
 
-
+# dror commented this out ###################################################################################################################
 ### Bower ###
-bower_components
-.bower-cache
-.bower-registry
-.bower-tmp
+#bower_components
+#.bower-cache
+#.bower-registry
+#.bower-tmp
 
 
 ### Intellij ###
