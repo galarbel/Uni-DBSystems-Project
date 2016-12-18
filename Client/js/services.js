@@ -31,13 +31,13 @@ angular.module('app')
             return trip;
         };
         planner.getModifiedTrip = function getModifiedTrip(params) {
-            if (trip) {
-                params.last_trip_id = trip.id;
-                return findTrip(params);
-            }
-            else {
-                //TODO
-            }
+            // if (trip) {
+            //     params.last_trip_id = trip.id;
+            //     return findTrip(params);
+            // }
+            // else {
+            //     //TODO
+            // }
         };
         //init
         resetTrip();

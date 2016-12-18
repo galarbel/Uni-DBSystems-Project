@@ -1,3 +1,22 @@
-<div>
+<div class=" ">
+    <div class="form-container">
+        <form novalidate class="">
+            <div class="">
+                <label class="control-label">Trip Type:</label>
+                <select class="form-control"
+                        ng-model="type"
+                        name="type"
+                        ng-options="type.id as type.name for type in types">
+                </select>
+            </div>
 
+        <button class="" ng-click="findTrip()">Find!</button>
+        </form>
+    </div>
+    <div class="">
+        <div ng-if="trip"></div>
+        <div ng-if="!trip">
+
+        </div>
+    </div>
 </div>
