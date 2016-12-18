@@ -4,9 +4,9 @@
   box-sizing: border-box; }
 
 body {
-  background-color: #423E37;
+  background-color: #E7E5DF;
   font-family: 'Open Sans', sans-serif;
-  color: #EDEBD7; }
+  color: #393E41; }
 
 header {
   position: relative; }
@@ -14,7 +14,7 @@ header {
     max-width: 100%;
     height: 40px; }
   header ul {
-    color: #E3B23C;
+    color: #84A14A;
     list-style: none;
     display: flex;
     align-items: stretch;
@@ -29,8 +29,8 @@ header {
       header ul li:first-child {
         width: 80px; }
       header ul li.active {
-        background: #E3B23C;
-        color: #423E37; }
+        background: #84A14A;
+        color: #E7E5DF; }
       header ul li div {
         position: absolute;
         bottom: 20px; }

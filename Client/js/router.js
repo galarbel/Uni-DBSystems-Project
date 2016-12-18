@@ -19,6 +19,7 @@ angular.module('app')
             })
             .state('app.dayTrip', {
                 url: '/day-trip',
+                controller: 'tripCtrl',
                 templateUrl: '/html/views/trip-planner.html'
             })
             .state('app.find', {
