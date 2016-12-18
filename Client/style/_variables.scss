@@ -4,11 +4,24 @@ $light-background-color: #A39594;
 $text-color: #EDEBD7;
 $highlight-color: #E3B23C;
 
-
-
-
 $border-color: #D3D0CB;
 $background-color: #E7E5DF;
 $light-background-color: #FFFFFF;
 $text-color: #393E41;
 $highlight-color: #84A14A;
+
+//bootstrap overrides
+$body-bg: $background-color;
+
+$brand-primary: $highlight-color;
+//$brand-success: #5cb85c !default;
+//$brand-info: #5bc0de !default;
+//$brand-warning: #f0ad4e !default;
+//$brand-danger: #d9534f !default;
+
+$border-radius-base: 0px;
+$border-radius-large: 0px;
+$border-radius-small: 0px;
+
+$text-color: $text-color;
+$font-family-sans-serif: 'Open Sans', sans-serif;
