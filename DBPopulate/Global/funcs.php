@@ -3,7 +3,6 @@
 function insertToTempTable($foursquare_id, $name, $address, $lattitude, $longitude, $country_code,
                            $city, $state, $country_name) {
     global $db;
-
     $format =
         "
          INSERT IGNORE INTO DbMysql12.temp_table_1 
@@ -28,9 +27,18 @@ function insertToTempTable($foursquare_id, $name, $address, $lattitude, $longitu
             '%s');
         ";
 
-    $sql_statement = sprintf($format, $foursquare_id, $name, $address, $lattitude, $longitude, $country_code,
-        $city, $state, $country_name);
+    $sql_statement = sprintf($format,mysql_real_escape_string($foursquare_id),
+    mysql_real_escape_string($name),
+    mysql_real_escape_string($address),
+    $lattitude,
+    $longitude,
+    mysql_real_escape_string($country_code),
+    mysql_real_escape_string($city),
+    mysql_real_escape_string($state),
+    mysql_real_escape_string($country_name));
 
+    //echo $sql_statement;
+    //die;
     return $db->get_results($sql_statement);
 }
 
