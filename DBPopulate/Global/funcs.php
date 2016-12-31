@@ -35,7 +35,7 @@ function insertToTempTable($foursquare_id, $name, $address, $lattitude, $longitu
     $sql_statement = sprintf($format, $foursquare_id, $name, $address, $lattitude, $longitude, $country_code,
         $city, $state, $country_name);
 
-    echo $sql_statement;
+    return $db->get_results($sql_statement);
 }
 
 function getVenusFromFourSquare($lati,$longi) {
