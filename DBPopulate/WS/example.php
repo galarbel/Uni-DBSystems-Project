@@ -29,13 +29,14 @@
 		$db->debug();
 	}
 	
-	// Print out all user names
-	/*
-	$users = $db->get_results("SELECT * FROM users");
+	 
+	/* Print out all results from table */
+	$users = $db->get_results("SELECT * FROM temp_table_1");
 
+	
 	foreach ( $users as $user )
 	{
 		echo $user->name;
     }
-	*/
+
 ?>
