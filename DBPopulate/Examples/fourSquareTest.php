@@ -25,10 +25,6 @@ $apiCallURL = $apiCallURL . "&client_secret=" . $client_secret;
 $apiCallURL = $apiCallURL . "&v=" . $date;
 $apiCallURL = $apiCallURL . "&ll=" . $latitude . "," . $longitude;
 
-/*
-echo $apiCallURL;
-die;
-*/
 
  $ch = curl_init(); 
  curl_setopt($ch, CURLOPT_URL, $apiCallURL); 
