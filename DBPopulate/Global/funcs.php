@@ -6,26 +6,30 @@ function insertToTempTable($foursquare_id, $name, $address, $lattitude, $longitu
 
     $format =
         "
-      INSERT INTO DbMysql12.temp_table_1 
-        (foursqaure_id, 
-        name,
-        address,
-        lattitude,
-        longitude,
-        country_code,
-        city,
-        state,
-        country_name) 
-        VALUES 
-          ('%s', 
-          '%s', 
-          '%s', 
-          %d, 
-          %d, 
-          '%s',
-          '%s', 
-          '%s', 
-          '%s')
+        IF NOT EXISTS (SELECT * FROM DbMysql12.temp_table_1 
+         WHERE DbMysql12.temp_table_1.foursqaure_id = $foursquare_id)
+         BEGIN
+          INSERT INTO DbMysql12.temp_table_1 
+            (foursqaure_id, 
+            name,
+            address,
+            lattitude,
+            longitude,
+            country_code,
+            city,
+            state,
+            country_name) 
+            VALUES 
+              ('%s', 
+              '%s', 
+              '%s', 
+              %d, 
+              %d, 
+              '%s',
+              '%s', 
+              '%s', 
+              '%s')
+          END
         ";
 
     $sql_statement = sprintf($format, $foursquare_id, $name, $address, $lattitude, $longitude, $country_code,
