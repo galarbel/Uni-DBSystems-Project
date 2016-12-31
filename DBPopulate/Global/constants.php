@@ -16,10 +16,14 @@ $fourSquare_client_id = "VVFPKXJBWNMA1KQUJ50KYM5W5AK0IEIBITKTJPKVX3PQQDVR";
 $fourSquare_client_secret = "Q4FNEYLWT0OU0JWQDXEERMKPL1OOZIE0JBXCDTA0A0J05EDN";
 
 $fourSquare_v = "20161231";
+$fourSquare_radius = "1000";
+$foursquare_limit = "50";
 
 $fourSquareSearchURL = $fourSquareAPISearch;
 $fourSquareSearchURL .= "?client_id=" . $fourSquare_client_id;
 $fourSquareSearchURL .= "&client_secret=" . $fourSquare_client_secret;
 $fourSquareSearchURL .= "&v=" . $fourSquare_v;
+$fourSquareSearchURL .= "&radius=" . $fourSquare_radius;
+$fourSquareSearchURL .= "&limit=" . $foursquare_limit;
 /*-----------------------------*/
 ?>
