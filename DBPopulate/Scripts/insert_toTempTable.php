@@ -43,8 +43,9 @@ for ($latitude =    -90.000000; $latitude <= 90.000000; $latitude = $latitude + 
             //die;
         }
     // sleep for 10 seconds
-    sleep(10);
-    //echo $latitude . ", " . $longitude . " NEXT!";
+    sleep(1);
+    echo $latitude . ", " . $longitude . " NEXT!<br>";
+    flush();
     }
 }
 
