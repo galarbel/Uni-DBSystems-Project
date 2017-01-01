@@ -1,7 +1,7 @@
 <?php
 
 function insertToTempTable($foursquare_id, $name, $address, $lattitude, $longitude, $country_code,
-                           $city, $state, $country_name) {
+                           $city, $state, $country_name, $categories) {
     global $db;
     $format =
         "
@@ -14,29 +14,32 @@ function insertToTempTable($foursquare_id, $name, $address, $lattitude, $longitu
           country_code,
           city,
           state,
-          country_name) 
+          country_name,
+          categories) 
           VALUES 
-            ('%s', 
-            '%s', 
-            '%s', 
+            (%s, 
+            %s, 
+            %s, 
             %f, 
             %f, 
-            '%s',
-            '%s', 
-            '%s', 
-            '%s');
+            %s,
+            %s, 
+            %s, 
+            %s,
+            %s);
         ";
 
     $sql_statement = sprintf($format,
-    $foursquare_id,
-    $name,
-    $address,
-    $lattitude,
-    $longitude,
-    $country_code,
-    $city,
-    $state,
-    $country_name);
+        cleanSTRforDB($foursquare_id),
+        cleanSTRforDB($name),
+        cleanSTRforDB($address),
+        $lattitude,
+        $longitude,
+        cleanSTRforDB($country_code),
+        cleanSTRforDB($city),
+        cleanSTRforDB($state),
+        cleanSTRforDB($country_name),
+        cleanSTRforDB($categories));
 
     //echo $sql_statement;
     //die;
@@ -50,6 +53,7 @@ function getVenusFromFourSquare($lati,$longi) {
 
     //echo $url;
     //die;
+
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -58,6 +62,15 @@ function getVenusFromFourSquare($lati,$longi) {
     curl_close($ch);
 
     return $output;
+}
+
+function cleanSTRforDB($str) {
+    if ($str == "NULL") {
+        return $str;
+    }
+
+    return "'" . str_replace("'","''",$str) . "'";
+
 }
 
 

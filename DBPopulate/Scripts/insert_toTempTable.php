@@ -5,8 +5,8 @@ include_once '../Global/config.php';
 //$latitude = 40.730610;
 //$longitude = -73.935242;
 
-for ($latitude =    -90.000000; $latitude <= 90.000000; $latitude = $latitude + 0.05 ){
-    for ($longitude =  -180.000000; $longitude <= 180.000000; $longitude = $longitude + 0.05){
+for ($latitude =    31.000000; $latitude <= 48.000000; $latitude = $latitude + 0.05 ){
+    for ($longitude =  -125.000000; $longitude <= -70.000000; $longitude = $longitude + 0.05){
     
 
     $results = getVenusFromFourSquare($latitude,$longitude);
@@ -39,11 +39,19 @@ for ($latitude =    -90.000000; $latitude <= 90.000000; $latitude = $latitude + 
                 $state = $v->location->state;
             }
             $country_name = $v->location->country;
-            insertToTempTable($id, $name, $address, $flatitude, $flongitude, $country_code, $city, $state, $country_name);
+
+            $categories = "";
+            if (isset($v->categories)) {
+                foreach ($v->categories as $cate) {
+                    $categories .= $cate->name . ";";
+                }
+            }
+
+            insertToTempTable($id, $name, $address, $flatitude, $flongitude, $country_code, $city, $state, $country_name, $categories);
             //die;
         }
-    // sleep for 10 seconds
-    sleep(1);
+
+    usleep(100);
     echo $latitude . ", " . $longitude . " NEXT!<br>";
     flush();
     }
