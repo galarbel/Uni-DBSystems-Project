@@ -5,7 +5,7 @@ include_once '../Global/config.php';
 //$latitude = 40.730610;
 //$longitude = -73.935242;
 
-for ($latitude =    31.000000; $latitude <= 48.000000; $latitude = $latitude + 0.05 ){
+for ($latitude =    35.650000; $latitude <= 48.000000; $latitude = $latitude + 0.05 ){
     for ($longitude =  -125.000000; $longitude <= -70.000000; $longitude = $longitude + 0.05){
     
 
