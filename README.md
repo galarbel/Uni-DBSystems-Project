@@ -13,9 +13,9 @@ Team: Nitzan, Dror, Ariel, Gal
 
 #### TODO ####
 1. finish running on all USA (started at 31, currently at 41 out of 48)
-1. finish dbPopulate_ins_categories
-2. finish dbPopulate_ins_cities
-3. create dbPopulate_ins_states
+1. finish dbPopulate_ins_categories --done, but needs a 2nd opnion (review)
+2. finish dbPopulate_ins_cities --done, but needs a 2nd opnion (review)
+3. create dbPopulate_ins_states --removing?
 4. create dbPopulate_ins_places
 5. create dbPopulate_ins_data_from_temp_table 
 6. make php - insert_places_info.php  (this should include hours, rating, price, REVIEWS! + any other relevant info)
