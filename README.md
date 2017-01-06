@@ -4,7 +4,7 @@ Team: Nitzan, Dror, Ariel, Gal
 
 ## **DB Populate** ##
 
-### Process For Populating DB ###
+#### Process For Populating DB ####
 
 1. Run PHP insert_toTempTable.php with LL params ( latitude start & finish, and longitude start & finish)
 2. Run SQL SP - dbPopulate_ins_data_from_temp_table (it runs the following SPs: dbPopulate_ins_categories, dbPopulate_ins_cities, dbPopulate_ins_states, dbPopulate_ins_places)
