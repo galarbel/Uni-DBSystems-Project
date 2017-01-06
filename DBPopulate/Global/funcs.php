@@ -1,6 +1,6 @@
 <?php
 
-function insertToTempTable($foursquare_id, $name, $address, $lattitude, $longitude, $country_code,
+function insertToTempTable($foursquare_id, $name, $address, $latitude, $longitude, $country_code,
                            $city, $state, $country_name, $categories) {
     global $db;
     $format =
@@ -17,33 +17,33 @@ function insertToTempTable($foursquare_id, $name, $address, $lattitude, $longitu
           country_name,
           categories) 
           VALUES 
-            (%s, 
-            %s, 
-            %s, 
-            %f, 
-            %f, 
-            %s,
-            %s, 
-            %s, 
-            %s,
-            %s);
+            (?,
+            ?, 
+            ?, 
+            ?, 
+            ?, 
+            ?,
+            ?, 
+            ?, 
+            ?,
+            ?);
         ";
 
-    $sql_statement = sprintf($format,
-        cleanSTRforDB($foursquare_id),
-        cleanSTRforDB($name),
-        cleanSTRforDB($address),
-        $lattitude,
+    $params = [
+        $foursquare_id,
+        $name,
+        $address,
+        $latitude,
         $longitude,
-        cleanSTRforDB($country_code),
-        cleanSTRforDB($city),
-        cleanSTRforDB($state),
-        cleanSTRforDB($country_name),
-        cleanSTRforDB($categories));
+        $country_code,
+        $city,
+        $state,
+        $country_name,
+        $categories];
 
     //echo $sql_statement;
     //die;
-    return $db->get_results($sql_statement);
+    return $db->rawQuery($format, $params);
 }
 
 function getVenusFromFourSquare($lati,$longi) {
@@ -63,16 +63,5 @@ function getVenusFromFourSquare($lati,$longi) {
 
     return $output;
 }
-
-function cleanSTRforDB($str) {
-    if ($str == "NULL") {
-        return $str;
-    }
-
-    return "'" . str_replace("'","''",$str) . "'";
-
-}
-
-
 
 ?>

@@ -5,7 +5,9 @@ include_once '../Global/config.php';
 //$latitude = 40.730610;
 //$longitude = -73.935242;
 
-for ($latitude =    35.650000; $latitude <= 48.000000; $latitude = $latitude + 0.05 ){
+$USA_START_LATITUDE = 31.000000;
+
+for ($latitude =    40.500000; $latitude <= 48.000000; $latitude = $latitude + 0.05 ){
     for ($longitude =  -125.000000; $longitude <= -70.000000; $longitude = $longitude + 0.05){
     
 
@@ -21,29 +23,22 @@ for ($latitude =    35.650000; $latitude <= 48.000000; $latitude = $latitude + 0
     //echo json_encode($vArr[0]);
 
         foreach ($vArr as $v) {
-            $address = "NULL";
-            $city = "NULL";
-            $state = "NULL";
-            $id = $v->id;
-            $name = $v->name;
-            if (isset($v->location->address)){
-                $address = $v->location->address;
-            }
-            $flatitude = $v->location->lat;
+            $id         = $v->id;
+            $name       = $v->name;
+            $flatitude  = $v->location->lat;
             $flongitude = $v->location->lng;
-            $country_code = $v->location->cc;
-            if (isset($v->location->city)){
-                $city = $v->location->city;
-            }
-            if (isset($v->location->state)){
-                $state = $v->location->state;
-            }
-            $country_name = $v->location->country;
 
-            $categories = "";
+            $address        = (isset($v->location->address) ? $v->location->address : null);
+            $city           = (isset($v->location->city) ? $v->location->city : null);
+            $country_code   = (isset($v->location->cc) ? $v->location->cc : null);
+            $state          = (isset($v->location->state) ? $v->location->state : null);
+            $country_name   = (isset($v->location->country) ? $v->location->country : null);
+
+            $categories = null;
             if (isset($v->categories)) {
                 foreach ($v->categories as $cate) {
-                    $categories .= $cate->name . ";";
+                    $categories = $cate->name;
+                    break; //seems like there is only 1 category per place...
                 }
             }
 
@@ -51,7 +46,7 @@ for ($latitude =    35.650000; $latitude <= 48.000000; $latitude = $latitude + 0
             //die;
         }
 
-    usleep(100);
+    usleep(50);
     echo $latitude . ", " . $longitude . " NEXT!<br>";
     flush();
     }
