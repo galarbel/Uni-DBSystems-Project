@@ -11,7 +11,7 @@ Team: Nitzan, Dror, Ariel, Gal
 3. Run PHP insert_places_info.php - it will add additional info needed per place
 
 
-### TODO ###
+#### TODO ####
 1. finish running on all USA (started at 31, currently at 41 out of 48)
 1. finish dbPopulate_ins_categories
 2. finish dbPopulate_ins_cities
