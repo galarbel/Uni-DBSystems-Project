@@ -2,7 +2,7 @@
 
 Team: Nitzan, Dror, Ariel, Gal
 
-## DB Populate ##
+## **DB Populate** ##
 
 ### Process For Populating DB ###
 
@@ -21,9 +21,9 @@ Team: Nitzan, Dror, Ariel, Gal
 6. make php - insert_places_info.php  (this should include hours, rating, price, REVIEWS! + any other relevant info)
 7. run insert_places_info.php for all the places
 
-## DB Queries ##
+## **DB Queries** ##
 ... to do :)
 
 
-## Client ##
+## **Client** ##
 ...to do :)
