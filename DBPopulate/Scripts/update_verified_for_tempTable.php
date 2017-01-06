@@ -5,7 +5,7 @@ include_once '../Global/config.php';
 //$latitude = 40.730610;
 //$longitude = -73.935242;
 
-$results = $db->rawQuery("SELECT foursquare_id from temp_table_2 where verified is null limit 200");
+$results = $db->rawQuery("SELECT foursquare_id from temp_table_2 where verified is null and primary_cate in (select category_name from Categories) ORDER BY foursquare_id ASC limit 200");
 
 while (sizeof($results) > 0) {
     foreach ($results as $v) {
