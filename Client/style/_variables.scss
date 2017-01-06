@@ -10,18 +10,6 @@ $light-background-color: #FFFFFF;
 $text-color: #393E41;
 $highlight-color: #84A14A;
 
-//---------------bootstrap overrides
-$body-bg: $background-color;
+//---------------material overrides
 
-$brand-primary: $highlight-color;
-//$brand-success: #5cb85c !default;
-//$brand-info: #5bc0de !default;
-//$brand-warning: #f0ad4e !default;
-//$brand-danger: #d9534f !default;
-
-$border-radius-base: 0px;
-$border-radius-large: 0px;
-$border-radius-small: 0px;
-
-$text-color: $text-color;
-$font-family-sans-serif: 'Open Sans', sans-serif;
+$font-family: 'Open Sans', sans-serif;

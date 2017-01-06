@@ -7,8 +7,8 @@ header {
   ul {
     color: $highlight-color;
     list-style: none;
-    display: flex;
-    align-items: stretch;
+    //display: flex;
+    //align-items: stretch;
     padding: 0;
     margin: 0 0 0 0;
     li {
@@ -17,9 +17,9 @@ header {
       padding: 10px 20px;
       display: block;
       width: 200px;
-      &:first-child { //logo
+      /*&:first-child { //logo
         width: 80px;
-      }
+      }*/
       &.active {
         background: $highlight-color;
         color: $background-color;
