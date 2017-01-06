@@ -2,6 +2,12 @@
 
 Team: Nitzan, Dror, Ariel, Gal
 
+### Questions for Amit ###
+1. What to do about polluted / non-real data (since foursquare is user input....)
+2. using Stored Procedures
+3. using https://github.com/joshcam/PHP-MySQLi-Database-Class for PHP-SQL -- BUT only using it's "rawQuery" method
+
+
 ## **DB Populate** ##
 
 #### Process For Populating DB ####
