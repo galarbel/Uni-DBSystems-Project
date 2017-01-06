@@ -19,11 +19,18 @@ $fourSquare_v = "20161231";
 $fourSquare_radius = "1000";
 $foursquare_limit = "50";
 
+//Venues
 $fourSquareSearchURL = $fourSquareAPISearch;
 $fourSquareSearchURL .= "?client_id=" . $fourSquare_client_id;
 $fourSquareSearchURL .= "&client_secret=" . $fourSquare_client_secret;
 $fourSquareSearchURL .= "&v=" . $fourSquare_v;
 $fourSquareSearchURL .= "&radius=" . $fourSquare_radius;
 $fourSquareSearchURL .= "&limit=" . $foursquare_limit;
+
+//Venue Info
+$fourSquareInfoFormatURL = $fourSquareAPI . "/%s";
+$fourSquareInfoFormatURL .= "?client_id=" . $fourSquare_client_id;
+$fourSquareInfoFormatURL .= "&client_secret=" . $fourSquare_client_secret;
+$fourSquareInfoFormatURL .= "&v=" . $fourSquare_v;
 /*-----------------------------*/
 ?>
