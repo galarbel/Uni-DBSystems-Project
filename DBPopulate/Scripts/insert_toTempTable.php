@@ -24,6 +24,8 @@ for ($latitude =    40.600000; $latitude <= 48.000000; $latitude = $latitude + 0
             $flatitude  = $v->location->lat;
             $flongitude = $v->location->lng;
 
+            $verified   = $v->verified;
+
             $address        = (isset($v->location->address) ? $v->location->address : null);
             $city           = (isset($v->location->city)    ? $v->location->city : null);
             $country_code   = (isset($v->location->cc)      ? $v->location->cc : null);
@@ -38,11 +40,10 @@ for ($latitude =    40.600000; $latitude <= 48.000000; $latitude = $latitude + 0
                 }
             }
 
-            insertToTempTable($id, $name, $address, $flatitude, $flongitude, $country_code, $city, $state, $country_name, $categories);
-            //die;
+            insertToTempTable($id, $name, $address, $flatitude, $flongitude, $country_code, $city, $state, $country_name, $categories,$verified);
         }
 
-        usleep(50);
+        usleep(20);
         echo $latitude . ", " . $longitude . " NEXT!<br>";
         flush();
     }

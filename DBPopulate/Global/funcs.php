@@ -35,21 +35,22 @@ function getVenueInformationFromFourSquare($id) {
 }
 
 function insertToTempTable($foursquare_id, $name, $address, $latitude, $longitude, $country_code,
-                           $city, $state, $country_name, $categories) {
+                           $city, $state, $country_name, $category,$verified) {
     global $db;
     $format =
         "
-         INSERT IGNORE INTO DbMysql12.temp_table_1 
-          (foursqaure_id, 
+         INSERT IGNORE INTO DbMysql12.temp_table_2 
+          (foursquare_id, 
           name,
           address,
-          lattitude,
+          latitude,
           longitude,
           country_code,
           city,
           state,
           country_name,
-          categories) 
+          primary_cate,
+          verified) 
           VALUES 
             (?,
             ?, 
@@ -59,6 +60,7 @@ function insertToTempTable($foursquare_id, $name, $address, $latitude, $longitud
             ?,
             ?, 
             ?, 
+            ?,
             ?,
             ?);
         ";
@@ -73,16 +75,13 @@ function insertToTempTable($foursquare_id, $name, $address, $latitude, $longitud
         $city,
         $state,
         $country_name,
-        $categories];
+        $category,
+        $verified];
 
     //echo $sql_statement;
     //die;
     return $db->rawQuery($format, $params);
 }
-
-
-
-
 
 
 ?>
