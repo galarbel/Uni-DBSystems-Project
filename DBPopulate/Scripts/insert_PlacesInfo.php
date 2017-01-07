@@ -2,7 +2,7 @@
 
 include_once '../Global/config.php';
 
-$sqlQuery = "SELECT foursquare_id from temp_table_2 where verified is null and primary_cate in (select category_name from Categories) limit 200";
+$sqlQuery = "SELECT place_id, foursquare_id from Places where place_id not in (select place_id from Places_Info) limit 200";
 
 $places = $db->rawQuery($sqlQuery);
 
@@ -38,7 +38,6 @@ while (sizeof($places) > 0) {
         if (isset($v->categories)) {
             foreach ($v->categories as $category) {
                 $categoryParams = [$id, $category->name];
-
                 $db->rawQuery("call dbPopulate_ins_places_to_category (?, ?)", $categoryParams);
             }
         }
@@ -68,10 +67,22 @@ while (sizeof($places) > 0) {
             $db->rawQuery("call dbPopulate_ins_places_photo (?, ?, ?, ?, ?)", $photoParams);
         }
 
+        //reviews
+        if (isset($v->tips->groups[0])) {
+            foreach ($v->tips->groups[0]->items as $review) {
+
+                $reviewText     = $review->text;
+                $reviewLikes    = $review->likes->count;
+                $reviewRating   = null;
+
+                $reviewParams = [$id, $reviewText, $reviewRating, $reviewLikes];
+
+                $db->rawQuery("call dbPopulate_ins_review (?, ?, ?, ?)", $reviewParams);
+            }
+        }
+
         usleep(20);
     }
-    die;
-
 
     $places = $db->rawQuery($sqlQuery);
 }
