@@ -1,0 +1,22 @@
+{
+  "name": "Client",
+  "authors": [
+    "-"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "dependencies": {
+    "angular-ui-router": "^0.3.2",
+    "angular": "1.6.0",
+    "angular-material": "^1.1.1",
+    "ng-lodash": "^0.5.0",
+    "ngmap": "^1.17.8",
+    "ngGeolocation": "^0.0.8"
+  },
+  "resolutions": {
+    "angular": "1.6.0"
+  }
+}

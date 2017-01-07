@@ -1,0 +1,36 @@
+<md-dialog>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Find Your Location</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon>close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-padding layout="column">
+        <md-subheader class="md-primary">
+            Use browser location, google map or manual input to set your location
+        </md-subheader>
+        <section>
+            <md-button ng-click="setLocationFromBrowser()" class="md-primary md-raised">Browser Location</md-button>
+        </section>
+        <section style="min-height: 110px" layout="row">
+            <md-input-container>
+                <label>Longitude</label>
+                <input step="any" type="number" ng-required="true" ng-model="ll.lon">
+            </md-input-container>
+            <md-input-container>
+                <label>Latitude</label>
+                <input step="any" type="number" ng-required="true" ng-model="ll.lat">
+            </md-input-container>
+        </section>
+        <map-to-ll lat="ll.lat" lon="ll.lon"></map-to-ll>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button class="md-raised md-primary" ng-click="save(ll)">
+            Save
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>
