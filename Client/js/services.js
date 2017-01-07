@@ -17,9 +17,11 @@ angular.module('app')
     .factory('tripPlanner', function (server) {
         var planner = {};
         var trip;
+
         function resetTrip() {
             trip = null;
         }
+
         planner.findTrip = function findTrip(params) {
             return server.findTrip(params)
                 .then(function (_trip) {
@@ -43,3 +45,32 @@ angular.module('app')
         resetTrip();
         return planner;
     })
+    .factory('state', function () {
+        return {
+            currentPage: 'day',
+            ll: {
+                lon: 0,
+                lat: 0
+            }
+        }
+    })
+    .factory('geoGetter', function ($geolocation) {
+        function get() {
+            console.log("Trying to get user location from browser");
+            return $geolocation.getCurrentPosition({
+                enableHighAccuracy: true
+            })
+                .then(function (location) {
+                    var lat = location.coords.latitude;
+                    var lon = location.coords.longitude;
+                    return {
+                        lat: lat,
+                        lon: lon
+                    }
+                })
+        }
+
+        return {
+            get: get
+        }
+    });

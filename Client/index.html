@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <base href="/">
     <title>App name</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style/main.css"/>
-
 </head>
 <body>
 
-<div id="app-container" ng-include="'/html/app.html'" ng-cloak>
+<div id="app-container" ng-include="'/html/app.html'" ng-cloak style="height: 100%;">
     Loading app...
 </div>
 
@@ -19,10 +18,14 @@
 <script src="bower_components/angular-aria/angular-aria.js"></script>
 <script src="bower_components/angular-animate/angular-animate.js"></script>
 <script src="bower_components/angular-material/angular-material.js"></script>
-<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/ng-lodash/build/ng-lodash.js"></script>
+<script src="bower_components/ngGeolocation/ngGeolocation.min.js"></script>
+<script src="bower_components/ngmap/build/scripts/ng-map.js"></script>
+<!--<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>-->
+
 <!--app dependencies-->
 <script src="js/app.js"></script>
-<script src="js/router.js"></script>
+<!--<script src="js/router.js"></script>-->
 <script src="js/config/develop.js"></script>
 <script src="js/controllers.js"></script>
 <script src="js/directives.js"></script>
