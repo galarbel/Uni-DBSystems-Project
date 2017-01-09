@@ -30,6 +30,8 @@ Team: Nitzan, Dror, Ariel, Gal
 
 ## **Server** ##
 
+#### TODO ####
+
 1. Start thinking about what Queries
 2. develop Queries (probably as stored procedures)
 3. develop PHP files to connect DB & Client calls
