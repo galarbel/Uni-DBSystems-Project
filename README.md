@@ -38,4 +38,12 @@ Team: Nitzan, Dror, Ariel, Gal
 
 
 ## **Client** ##
-...to do :)
+
+1. places search
+2. places list
+3. place page
+4. add review
+5. day search result
+6. replacements options menu
+7. show replacement details
+8. replace mocks with requests
