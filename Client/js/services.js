@@ -47,11 +47,14 @@ angular.module('app')
     })
     .factory('state', function () {
         return {
-            currentPage: 'day',
+            currentPage: 'day',//or 'places'
+            placeCurrentPage: 'search',//or 'place'
             ll: {
                 lon: 0,
                 lat: 0
-            }
+            },
+            resultsQuery : '',
+            searchResults : null
         }
     })
     .factory('geoGetter', function ($geolocation) {
@@ -73,4 +76,17 @@ angular.module('app')
         return {
             get: get
         }
-    });
+    })
+    .factory('searchPlaces',function($http, $q){
+        return function searchPlaces(queryString, limit, skip){
+            //mock
+            var places = [];
+            for (var i = skip; i < skip + limit; i++) {
+                places.push({
+                    name: 'Name' + i,
+                    description: 'Desc'
+                })
+            }
+            return $q.when(places)
+        }
+    })

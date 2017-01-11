@@ -53,6 +53,32 @@ angular.module('app')
             })
         }
     })
-    .controller('placesCtrl', function () {
-        $scope.searchField = '';
+    .controller('placesCtrl', function ($scope, state) {
+        $scope.state = state;
+
+    })
+    .controller('placesSearchCtrl', function ($scope, state, $q, searchPlaces) {
+        $scope.state = state;
+        var pageSize = 20;
+        $scope.currentPage = 0;
+        $scope.searchText = '';
+        $scope.search = function (pageNumber) {
+            if (!$scope.searchText) {
+                return; //todo report to user that there must be search text
+            }
+            var searchedText = $scope.searchText;
+            pageNumber = pageNumber || 0;
+            $scope.currentPage = pageNumber;
+
+            //mock creation
+            $scope.places = [];
+            searchPlaces($scope.searchText, pageSize, pageNumber * pageSize)
+                .then(function (places) {//TODO
+                    $scope.places = places;
+                    state.resultsQuery = searchedText;
+                })
+
+
+        }
+
     })
