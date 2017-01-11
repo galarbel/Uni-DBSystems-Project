@@ -13,14 +13,14 @@ angular.module('app')
     /*    .controller('headerCtrl', function ($scope) {
 
      })*/
-    .controller('dayCtrl', function ($scope,$mdDialog,state,lodash) {
+    .controller('dayCtrl', function ($scope, $mdDialog, state, lodash) {
         $scope.state = state;
-        $scope.$watch('state.ll',function(v){
+        $scope.$watch('state.ll', function (v) {
             $scope.userLocation = v;
             console.log(v)
-        },true);
+        }, true);
 
-        $scope.openLocationDialog = function(ev){
+        $scope.openLocationDialog = function (ev) {
             $mdDialog.show({
                 controller: 'locationFinderCtrl',
                 templateUrl: 'html/directives/locationFinder.html',
@@ -30,25 +30,28 @@ angular.module('app')
                 }
                 // clickOutsideToClose:true
             })
-                .then(function(ll){
+                .then(function (ll) {
                     state.ll = ll;
                 })
-                .catch(function(err){
+                .catch(function (err) {
                     console.log(err);
                 });
         }
     })
-    .controller('locationFinderCtrl', function ($scope, $mdDialog,ll,geoGetter) {
+    .controller('locationFinderCtrl', function ($scope, $mdDialog, ll, geoGetter) {
         $scope.ll = ll;
-        $scope.cancel = function(){
+        $scope.cancel = function () {
             $mdDialog.cancel();
         }
-        $scope.save = function(data){
+        $scope.save = function (data) {
             $mdDialog.hide(data);
         }
-        $scope.setLocationFromBrowser = function(){
-            geoGetter.get().then(function(ll){
+        $scope.setLocationFromBrowser = function () {
+            geoGetter.get().then(function (ll) {
                 $scope.ll = ll;
             })
         }
+    })
+    .controller('placesCtrl', function () {
+
     })

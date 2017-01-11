@@ -13,8 +13,16 @@
                 <md-list-item ng-click="openLocationDialog($event)">
                     Your Location
                 </md-list-item>
-                <md-list-item ng-click="null">
-                    TBD
+                <md-list-item>
+                    <md-input-container>
+                        <label>PICK TODO</label>
+                        <md-select ng-model="todo" placeholder="OPTIONS">
+                            <md-select-header>
+                                optional title
+                            </md-select-header>
+                            <md-option data-value="todo">TODO</md-option>
+                        </md-select>
+                    </md-input-container>
                 </md-list-item>
                 <md-divider></md-divider>
                 <md-list-item >
