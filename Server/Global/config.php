@@ -2,7 +2,8 @@
 
 include_once 'constants.php';
 include_once 'funcs.php';
-include_once 'ezsql_core.php';
-include_once 'ezsql_mysql.php';
+include_once 'MysqliDb.php';
+
+$db = new MysqliDb ($DBServer, $DBUsername, $DBPassword, $DBName);
 
 ?>
