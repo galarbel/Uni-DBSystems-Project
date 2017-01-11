@@ -1,35 +1,42 @@
-<div ng-controller="dayCtrl">
+<div flex layout="row" ng-controller="dayCtrl">
     <md-sidenav
-            style="height: 100%"
+            flex
+            style="min-height: 235px;"
             class="md-sidenav-left"
             md-component-id="left"
-            md-is-locked-open="$mdMedia('gt-md')"
+            md-is-locked-open="$mdMedia('gt-sm')"
             md-whiteframe="4">
         <md-toolbar>
             <h1 class="md-toolbar-tools">Plan a culinary day!</h1>
         </md-toolbar>
-        <md-content>
-            <md-list flex>
-                <md-list-item ng-click="openLocationDialog($event)">
-                    Your Location
-                </md-list-item>
-                <md-list-item>
-                    <md-input-container>
-                        <label>PICK TODO</label>
-                        <md-select ng-model="todo" placeholder="OPTIONS">
-                            <md-select-header>
-                                optional title
-                            </md-select-header>
-                            <md-option data-value="todo">TODO</md-option>
-                        </md-select>
-                    </md-input-container>
-                </md-list-item>
-                <md-divider></md-divider>
-                <md-list-item >
-                    <p></p>
-                    <md-button ng-click="null" class="md-primary md-raised">Search</md-button>
-                </md-list-item>
-            </md-list>
-        </md-content>
+        <md-content><md-list >
+            <md-list-item ng-click="openLocationDialog($event)">
+                Your Location
+            </md-list-item>
+            <md-list-item>
+                <md-input-container>
+                    <label>PICK TODO</label>
+                    <md-select ng-model="todo" placeholder="OPTIONS">
+                        <md-select-header>
+                            optional title
+                        </md-select-header>
+                        <md-option value="todo">TODO</md-option>
+                    </md-select>
+                </md-input-container>
+            </md-list-item>
+            <!-- <md-divider></md-divider>
+             <md-list-item>
+                 <p></p>
+                 <md-button ng-click="null" class="md-primary md-raised">Search</md-button>
+             </md-list-item>-->
+        </md-list></md-content>
+
+
+        <div flex></div>
+        <md-divider></md-divider>
+        <div layout="row" >
+            <p flex></p>
+            <md-button flex="nogrow" ng-click="null" class="md-primary md-raised">Search</md-button>
+        </div>
     </md-sidenav>
 </div>

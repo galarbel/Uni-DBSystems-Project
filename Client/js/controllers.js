@@ -27,7 +27,8 @@ angular.module('app')
                 targetEvent: ev,
                 locals: {
                     ll: lodash.extend({}, state.ll)
-                }
+                },
+                fullscreen: true
                 // clickOutsideToClose:true
             })
                 .then(function (ll) {
@@ -53,5 +54,5 @@ angular.module('app')
         }
     })
     .controller('placesCtrl', function () {
-
+        $scope.searchField = '';
     })
