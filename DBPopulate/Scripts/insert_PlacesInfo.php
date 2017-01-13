@@ -25,14 +25,12 @@ while (sizeof($places) > 0) {
 
         $url        = $v->url;
 
-        $hours      = null;
-
         $price      = $v->price->tier;
 
 
-        $infoParams = [$id, $address, $city, $state, $country, $url, $hours, $phone, $price];
+        $infoParams = [$id, $address, $city, $state, $country, $url, $phone, $price];
 
-        $db->rawQuery("call dbPopulate_ins_places_info (?, ?, ?, ?, ?, ?, ?, ?, ?)", $infoParams);
+        $db->rawQuery("call dbPopulate_ins_places_info (?, ?, ?, ?, ?, ?, ?, ?)", $infoParams);
 
         //categories
         if (isset($v->categories)) {
