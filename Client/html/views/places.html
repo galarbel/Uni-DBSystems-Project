@@ -1,6 +1,6 @@
 <div ng-switch="state.placeCurrentPage" flex="nogrow" style="width: 1024px;border : 1px solid red" layout="column" ng-controller="placesCtrl" >
     <div flex="grow" layout="row" layout-padding ng-switch-when="search">
-        <ng-include flex="grow" src="'/html/views/find.html'"></ng-include>
+        <ng-include flex="grow" layout="column" src="'/html/views/find.html'"></ng-include>
     </div>
     <div flex="grow" layout="row" layout-padding ng-switch-when="place">
         <ng-include flex="grow" src="'/html/views/place.html'"></ng-include>

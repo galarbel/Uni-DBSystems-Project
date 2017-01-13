@@ -9,6 +9,11 @@ angular.module('app')
         $scope.goto = function (page) {
             state.currentPage = page;
         }
+        $scope.gotoPlace = function (placeId) {
+            state.currentPage = 'places';
+            state.placeCurrentPage = 'place';
+            state.currentPlaceId = placeId;
+        }
     })
     /*    .controller('headerCtrl', function ($scope) {
 
@@ -43,22 +48,20 @@ angular.module('app')
         $scope.ll = ll;
         $scope.cancel = function () {
             $mdDialog.cancel();
-        }
+        };
         $scope.save = function (data) {
             $mdDialog.hide(data);
-        }
+        };
         $scope.setLocationFromBrowser = function () {
             geoGetter.get().then(function (ll) {
                 $scope.ll = ll;
             })
-        }
+        };
     })
     .controller('placesCtrl', function ($scope, state) {
-        $scope.state = state;
 
     })
     .controller('placesSearchCtrl', function ($scope, state, $q, searchPlaces) {
-        $scope.state = state;
         var pageSize = 20;
         $scope.currentPage = 0;
         $scope.searchText = '';
@@ -73,12 +76,35 @@ angular.module('app')
             //mock creation
             $scope.places = [];
             searchPlaces($scope.searchText, pageSize, pageNumber * pageSize)
-                .then(function (places) {//TODO
+                .then(function (places) {
                     $scope.places = places;
                     state.resultsQuery = searchedText;
                 })
-
-
         }
+
+
+    })
+    .controller('placeDetailsCtrl', function ($scope, state, placeConnection, util) {
+        $scope.init = function () {
+            return placeConnection.getById(state.currentPlaceId)
+                .then(function (place) {
+                    $scope.imgStyle = imgStyle(place);
+                    return $scope.place = place;
+                })
+                .catch(function (err) {
+                    //TODO
+                })
+        }
+        function imgStyle(place) {
+            if (!place) {
+                return {};
+            }
+            debugger;
+            return {
+                'background-image': 'url("'+ place.image + '")',
+                // 'background-size' : 'cover'
+            }
+        }
+
 
     })
