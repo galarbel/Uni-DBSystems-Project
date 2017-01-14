@@ -2,10 +2,11 @@
 
 include_once '../Global/config.php';
 
-$sqlQuery = "call server_get_by_distance (?, ?, ?)";
+$sqlQuery = "call server_get_by_distance_and_type (?, ?, ?,?)";
 
 $lati = null;
 $longi = null;
+$type = null;
 $max_price = null;
 
 
@@ -17,11 +18,15 @@ if (isset($_REQUEST["longitude"]) && is_numeric($_REQUEST["longitude"])) {
     $longi = $_REQUEST["longitude"];
 }
 
+if (isset($_REQUEST["type"]) && is_numeric($_REQUEST["type"])) {
+    $type = $_REQUEST["type"];
+}
+
 if (isset($_REQUEST["price"]) && is_numeric($_REQUEST["price"])) {
     $max_price = $_REQUEST["price"];
 }
 
-if (! ($lati && $longi)) {
+if (! ($lati && $longi && $type)) {
     die;
 }
 
@@ -30,34 +35,18 @@ if (! ($lati && $longi)) {
 
 header('Content-type: application/json');
 
-$return = [];
-
-
-$requestsParams = [$lati, $longi, $max_price];
+$requestsParams = [$lati, $longi, $type, $max_price];
 $results = $db->rawQuery($sqlQuery, $requestsParams);
 
 //echo json_encode($results); die;
+//addCategoriesToPlace($results[1]);
 
-foreach ($results as $p) {
-    addCategoriesToPlace($p);
-    parsePlacePhoto($p);
 
-    switch ($p["category_type"]) {
-        case 1:
-            $return["morning"] = $p;
-            break;
-        case 2:
-            $return["lunch"] = $p;
-            break;
-        case 3:
-            $return["dinner"] = $p;
-            break;
-        case 4:
-            $return["night"] = $p;
-            break;
-    }
+for ($i = 0; $i < sizeof($results); $i++) {
+    addCategoriesToPlace($results[$i]);
+    parsePlacePhoto($results[$i]);
 }
 
-echo json_encode($return);
+echo json_encode($results);
 
 ?>

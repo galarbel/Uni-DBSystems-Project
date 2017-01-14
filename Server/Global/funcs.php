@@ -1,5 +1,24 @@
 <?php
 
+function addCategoriesToPlace(&$place) {
+    global $db;
+
+    $id = $place["place_id"];
+
+    $results = $db->rawQuery("call server_get_place_categories(?)", [$id]);
+
+    $place["categories"] = [];
+
+
+    foreach ($results as $category) {
+        $place["categories"][] = $category["category_name"];
+    }
+}
+
+function parsePlacePhoto(&$place) {
+    $place["photo"] = $place["photo_prefix"] . $place["photo_width"] . 'x' . $place["photo_height"] . $place["photo_suffix"];
+}
+
 function curlCall($url) {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
