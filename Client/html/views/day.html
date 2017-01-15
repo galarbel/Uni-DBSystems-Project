@@ -9,32 +9,34 @@
         <md-toolbar>
             <h1 class="md-toolbar-tools">Plan a culinary day!</h1>
         </md-toolbar>
-        <md-content><md-list >
-            <md-list-item ng-click="openLocationDialog($event)">
-                Your Location
-            </md-list-item>
-            <md-list-item>
-                <md-input-container>
-                    <label>PICK TODO</label>
-                    <md-select ng-model="todo" placeholder="OPTIONS">
-                        <md-select-header>
-                            optional title
-                        </md-select-header>
-                        <md-option value="todo">TODO</md-option>
-                    </md-select>
-                </md-input-container>
-            </md-list-item>
-            <!-- <md-divider></md-divider>
-             <md-list-item>
-                 <p></p>
-                 <md-button ng-click="null" class="md-primary md-raised">Search</md-button>
-             </md-list-item>-->
-        </md-list></md-content>
+        <md-content>
+            <md-list>
+                <md-list-item ng-click="openLocationDialog($event)">
+                    Your Location
+                </md-list-item>
+                <md-list-item>
+                    <md-input-container>
+                        <label>PICK TODO</label>
+                        <md-select ng-model="todo" placeholder="OPTIONS">
+                            <md-select-header>
+                                optional title
+                            </md-select-header>
+                            <md-option value="todo">TODO</md-option>
+                        </md-select>
+                    </md-input-container>
+                </md-list-item>
+                <!-- <md-divider></md-divider>
+                 <md-list-item>
+                     <p></p>
+                     <md-button ng-click="null" class="md-primary md-raised">Search</md-button>
+                 </md-list-item>-->
+            </md-list>
+        </md-content>
 
 
         <div flex></div>
         <md-divider></md-divider>
-        <div layout="row" >
+        <div layout="row">
             <p flex></p>
             <md-button flex="nogrow" ng-click="null" class="md-primary md-raised">Search</md-button>
         </div>
