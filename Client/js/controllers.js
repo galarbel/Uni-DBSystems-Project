@@ -9,6 +9,11 @@ angular.module('app')
         $scope.goto = function (page) {
             state.currentPage = page;
         }
+        $scope.gotoPlace = function (placeId) {
+            state.currentPage = 'places';
+            state.placeCurrentPage = 'place';
+            state.currentPlaceId = placeId;
+        }
     })
     /*    .controller('headerCtrl', function ($scope) {
 
@@ -43,16 +48,63 @@ angular.module('app')
         $scope.ll = ll;
         $scope.cancel = function () {
             $mdDialog.cancel();
-        }
+        };
         $scope.save = function (data) {
             $mdDialog.hide(data);
-        }
+        };
         $scope.setLocationFromBrowser = function () {
             geoGetter.get().then(function (ll) {
                 $scope.ll = ll;
             })
-        }
+        };
     })
-    .controller('placesCtrl', function () {
-        $scope.searchField = '';
+    .controller('placesCtrl', function ($scope, state) {
+
+    })
+    .controller('placesSearchCtrl', function ($scope, state, $q, searchPlaces) {
+        var pageSize = 20;
+        $scope.currentPage = 0;
+        $scope.searchText = '';
+        $scope.search = function (pageNumber) {
+            if (!$scope.searchText) {
+                return; //todo report to user that there must be search text
+            }
+            var searchedText = $scope.searchText;
+            pageNumber = pageNumber || 0;
+            $scope.currentPage = pageNumber;
+
+            //mock creation
+            $scope.places = [];
+            searchPlaces($scope.searchText, pageSize, pageNumber * pageSize)
+                .then(function (places) {
+                    $scope.places = places;
+                    state.resultsQuery = searchedText;
+                })
+        }
+
+
+    })
+    .controller('placeDetailsCtrl', function ($scope, state, placeConnection, util) {
+        $scope.init = function () {
+            return placeConnection.getById(state.currentPlaceId)
+                .then(function (place) {
+                    $scope.imgStyle = imgStyle(place);
+                    return $scope.place = place;
+                })
+                .catch(function (err) {
+                    //TODO
+                })
+        }
+        function imgStyle(place) {
+            if (!place) {
+                return {};
+            }
+            debugger;
+            return {
+                'background-image': 'url("'+ place.image + '")',
+                // 'background-size' : 'cover'
+            }
+        }
+
+
     })

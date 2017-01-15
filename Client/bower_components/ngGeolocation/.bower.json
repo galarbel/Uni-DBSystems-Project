@@ -38,5 +38,6 @@
   },
   "_source": "https://github.com/ninjatronic/ngGeolocation.git",
   "_target": "^0.0.8",
-  "_originalSource": "ngGeolocation"
+  "_originalSource": "ngGeolocation",
+  "_direct": true
 }
