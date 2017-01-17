@@ -1,10 +1,10 @@
 angular.module('app')
-    .factory('util',function(){
+    .factory('util', function () {
         return {
             /*imgObjToUrl : function(imageObj){
-                var size = Math.min(imageObj.width,imageObj.height);
-                return imageObj.prefix + size + 'x' + size + imageObj.suffix;
-            }*/
+             var size = Math.min(imageObj.width,imageObj.height);
+             return imageObj.prefix + size + 'x' + size + imageObj.suffix;
+             }*/
         }
     })
     .factory('server', function ($http, config) {
@@ -104,7 +104,7 @@ angular.module('app')
             })
         }
     })
-    .factory('placeConnection', function ($http, $q, $timeout) {
+    .factory('placesConnection', function ($http, $q, $timeout,lodash) {
         function getById(id) {
             //mock
             return $timeout(angular.noop, 150)
@@ -142,10 +142,52 @@ angular.module('app')
             //TODO make the server refresh likes to this place
         }
 
+        function getDay(params) {
+            //TODO
+            var rawResponse = {
+                breakfast: {}
+            };
+            var myResponse = lodash.map(function(place,key){//converts to array with type inside
+                place._placeType = key;
+                return place;
+            })
+
+            return $q.resolve(myResponse);
+        }
+
+        /**
+         *
+         * @param params {Object} same as params of getDay
+         * @param replaceType {string} "Enum" representing if it's evening, breakfast etc.
+         */
+        function getReplacement(params, replaceType) {
+            //TODO
+            //mock
+            var mock = {
+                name: 'Name',
+                category_name: 'Category Name',
+                url: 'http://google.com',
+                phone: '(054) 7564553',
+                address: 'TAU',
+                image: 'https://bower.io/img/bower-logo.png'
+            };
+            mock = [1, 2, 3, 4, 5].map(function () {
+                return mock;
+            });
+            var data = mock;
+            //real code
+            data.forEach(function(place){
+                place._placeType = replaceType;
+            })
+            return $q.resolve(data)
+        }
+
         return {
             getById: getById,
             addReview: addReview,
             addLikeToReview: addLikeToReview,
-            refreshPlaceData: refreshPlaceData
+            refreshPlaceData: refreshPlaceData,
+            getDay:getDay,
+            getReplacement:getReplacement
         }
     })

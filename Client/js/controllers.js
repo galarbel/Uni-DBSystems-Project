@@ -15,10 +15,7 @@ angular.module('app')
             state.currentPlaceId = placeId;
         }
     })
-    /*    .controller('headerCtrl', function ($scope) {
-
-     })*/
-    .controller('dayCtrl', function ($scope, $mdDialog, state, lodash) {
+    .controller('dayCtrl', function ($scope, $mdDialog, state, lodash, placesConnection) {
         $scope.state = state;
         $scope.$watch('state.ll', function (v) {
             $scope.userLocation = v;
@@ -28,7 +25,7 @@ angular.module('app')
         $scope.openLocationDialog = function (ev) {
             $mdDialog.show({
                 controller: 'locationFinderCtrl',
-                templateUrl: 'html/directives/locationFinder.html',
+                templateUrl: 'html/sections/locationFinder.html',
                 targetEvent: ev,
                 locals: {
                     ll: lodash.extend({}, state.ll)
@@ -42,6 +39,50 @@ angular.module('app')
                 .catch(function (err) {
                     console.log(err);
                 });
+        };
+        $scope.openReplaceDialog = function (ev, replaceType) {
+            placesConnection.getReplacement($scope.params, replaceType)
+                .then(function (replacements) {
+                    return $mdDialog.show({
+                        controller: 'replaceDialogCtrl',
+                        templateUrl: 'html/sections/replaceDialog.html',
+                        targetEvent: ev,
+                        locals: {
+                            replacements: replacements
+                        }
+                    })
+                })
+                .then(function (replacement) {
+                    var indexOfPlace = $scope.day.reduce(function (i, place, currentIndex) {
+                        if (place._placeType == replacement._placeType) {
+                            i = currentIndex;
+                        }
+                        return i;
+                    }, -1);
+                    if(indexOfPlace === -1){
+                        console.error(replacement);
+                        throw new Error("Can't find place to insert replacement");
+                    }
+                    $scope.day.splice(indexOfPlace, 1, replacement);//model change to trigger view change
+                })
+                .catch(function (err) {
+                    console.error(err);
+                });
+        };
+
+        $scope.findDay = function () {
+            $scope.day = [];
+            placesConnection.getDay($scope.params)
+                .then(function (day) {
+                    $scope.day = day;
+                })
+        };
+
+        $scope.params = {
+            price: 1,
+            distance: 100,
+            night: false,
+            nightAndBreakfast: false
         }
     })
     .controller('locationFinderCtrl', function ($scope, $mdDialog, ll, geoGetter) {
@@ -56,6 +97,15 @@ angular.module('app')
             geoGetter.get().then(function (ll) {
                 $scope.ll = ll;
             })
+        };
+    })
+    .controller('replaceDialogCtrl', function ($scope, $mdDialog, replacements) {
+        $scope.replacements = replacements;
+        $scope.cancel = function () {
+            $mdDialog.cancel();
+        };
+        $scope.choose = function (data) {
+            $mdDialog.hide(data);
         };
     })
     .controller('placesCtrl', function ($scope, state) {
@@ -81,12 +131,10 @@ angular.module('app')
                     state.resultsQuery = searchedText;
                 })
         }
-
-
     })
-    .controller('placeDetailsCtrl', function ($scope, state, placeConnection, util) {
+    .controller('placeDetailsCtrl', function ($scope, state, placesConnection) {
         $scope.init = function () {
-            return placeConnection.getById(state.currentPlaceId)
+            return placesConnection.getById(state.currentPlaceId)
                 .then(function (place) {
                     $scope.imgStyle = imgStyle(place);
                     return $scope.place = place;
@@ -99,10 +147,8 @@ angular.module('app')
             if (!place) {
                 return {};
             }
-            debugger;
             return {
-                'background-image': 'url("'+ place.image + '")',
-                // 'background-size' : 'cover'
+                'background-image': 'url("' + place.image + '")'
             }
         }
 

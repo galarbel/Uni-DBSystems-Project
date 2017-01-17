@@ -12,24 +12,32 @@
         <md-content>
             <md-list>
                 <md-list-item ng-click="openLocationDialog($event)">
-                    Your Location
+                    <p>Set Your Location</p>
+                    <md-icon class="md-secondary">open_in_new</md-icon>
                 </md-list-item>
                 <md-list-item>
-                    <md-input-container>
-                        <label>PICK TODO</label>
-                        <md-select ng-model="todo" placeholder="OPTIONS">
-                            <md-select-header>
-                                optional title
-                            </md-select-header>
-                            <md-option value="todo">TODO</md-option>
-                        </md-select>
-                    </md-input-container>
+                    <md-slider-container flex>
+                        <p>Radius</p>
+                        <md-slider flex min="0" max="2000" ng-model="params.distance"></md-slider>
+                        <md-input-container>
+                            <input flex step="100" type="number" ng-model="params.distance">
+                        </md-input-container>
+                    </md-slider-container>
                 </md-list-item>
-                <!-- <md-divider></md-divider>
-                 <md-list-item>
-                     <p></p>
-                     <md-button ng-click="null" class="md-primary md-raised">Search</md-button>
-                 </md-list-item>-->
+                <md-list-item>
+                    <md-slider-container flex>
+                        <p>Price</p>
+                        <md-slider flex min="0" max="4" ng-model="params.price"></md-slider>
+                    </md-slider-container>
+                </md-list-item>
+                <md-list-item>
+                    <p>I'm a night person!</p>
+                    <md-checkbox class="md-secondary" ng-model="params.night"></md-checkbox>
+                </md-list-item>
+                <md-list-item ng-if="params.night">
+                    <p>But I still want to eat breakfast</p>
+                    <md-checkbox class="md-secondary" ng-model="params.nightAndBreakfast"></md-checkbox>
+                </md-list-item>
             </md-list>
         </md-content>
 
@@ -41,4 +49,8 @@
             <md-button flex="nogrow" ng-click="null" class="md-primary md-raised">Search</md-button>
         </div>
     </md-sidenav>
+
+    <div>
+        <md-button ng-click="openReplaceDialog($event,'TODO')">debug open replace dialog</md-button>
+    </div>
 </div>
