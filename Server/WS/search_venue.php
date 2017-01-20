@@ -2,18 +2,21 @@
 
 include_once '../Global/config.php';
 
-if (!isset($_REQUEST["name"])) {
-    echo 'missing \'name\' parameter'; die;
+$sqlQuery = "call web_get_places_by_text_search (?)";
+
+if (isset($_REQUEST["text"]) ) {
+    $words = preg_split('/\s+/', trim($_REQUEST["text"]), -1, PREG_SPLIT_NO_EMPTY);
+    for ($i = 0; $i < sizeof($words); $i++) {
+        $words[$i] = "+" . $words[$i] . "*";
+    }
+    $text_searched = join(" ", $words);
+} else {
+    die;
 }
 
 header('Content-type: application/json');
-$name = "'+" . $_REQUEST["name"] . "*'";
 
-// TODO - decide on relevant data
-$sqlQuery = "SELECT place_id, name, address, city_name, state, rating
-             FROM v_places
-             WHERE match (name) against (? in boolean mode) limit 5";
-$results = $db->rawQuery($sqlQuery, [$name]);
+$results = $db->rawQuery($sqlQuery, [$text_searched]);
 
 echo json_encode($results);
 
