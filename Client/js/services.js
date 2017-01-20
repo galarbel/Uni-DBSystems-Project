@@ -89,7 +89,7 @@ angular.module('app')
         /**
          * query string is search text
          */
-        return function searchPlaces(queryString, limit, skip) {
+        function textSearch(queryString, limit, skip) {
             //mock
             var places = [];
             for (var i = skip; i < skip + limit; i++) {
@@ -102,6 +102,26 @@ angular.module('app')
             return $timeout(angular.noop, 350).then(function () {
                 return places;
             })
+        }
+
+        function filterSearch(params,limit,skip){
+            //mock
+            var places = [];
+            for (var i = skip; i < skip + limit; i++) {
+                places.push({
+                    id: 'mockId' + i,
+                    name: 'Name' + i,
+                    description: 'Desc'
+                })
+            }
+            return $timeout(angular.noop, 350).then(function () {
+                return places;
+            })
+        }
+
+        return {
+            textSearch: textSearch,
+            filterSearch: filterSearch
         }
     })
     .factory('placesConnection', function ($http, $q, $timeout,lodash) {
@@ -152,6 +172,30 @@ angular.module('app')
                     phone: '(054) 7564553',
                     address: 'TAU',
                     image: 'https://bower.io/img/bower-logo.png'
+                },
+                lunch :{
+                    name: 'Name',
+                    category_name: 'Category Name',
+                    url: 'http://google.com',
+                    phone: '(054) 7564553',
+                    address: 'TAU',
+                    image: 'https://bower.io/img/bower-logo.png'
+                },
+                dinner: {
+                    name: 'Name',
+                    category_name: 'Category Name',
+                    url: 'http://google.com',
+                    phone: '(054) 7564553',
+                    address: 'TAU',
+                    image: 'https://bower.io/img/bower-logo.png'
+                },
+                night: {
+                    name: 'Name',
+                    category_name: 'Category Name',
+                    url: 'http://google.com',
+                    phone: '(054) 7564553',
+                    address: 'TAU',
+                    image: 'https://bower.io/img/bower-logo.png'
                 }
             };
             var myResponse = lodash.map(rawResponse,function(place,key){//converts to array with type inside
@@ -170,7 +214,7 @@ angular.module('app')
             //TODO
             //mock
             var mock = {
-                name: 'Name',
+                name: 'replacement',
                 category_name: 'Category Name',
                 url: 'http://google.com',
                 phone: '(054) 7564553',

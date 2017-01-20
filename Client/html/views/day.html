@@ -1,4 +1,4 @@
-<div flex layout="row" ng-controller="dayCtrl">
+<div flex layout="row" ng-controller="dayCtrl" layout-margin>
     <md-sidenav
             flex
             style="min-height: 235px;"
@@ -48,25 +48,41 @@
         </div>
     </md-sidenav>
 
-    <div >
-        <md-button ng-click="openReplaceDialog($event,'TODO')">debug open replace dialog</md-button>
+    <div layout="column" ng-hide="!day || !day.length" md-whiteframe="4" style="background: white">
+        <md-toolbar>
+            <h1 class="md-toolbar-tools">Enjoy!</h1>
+        </md-toolbar>
+        <md-content>
             <md-card ng-repeat="place in day" style="width:500px">
                 <md-card-header>
                     <md-card-avatar ng-switch="place._placeType">
-                        <md-icon ng-switch-when="morning">wb_sunny</md-icon>
-                        <md-icon ng-switch-when="lunch">store</md-icon>
+                        <md-icon ng-switch-when="morning">free_breakfast</md-icon>
+                        <md-icon ng-switch-when="lunch">wb_sunny</md-icon>
                         <md-icon ng-switch-when="dinner">store</md-icon>
-                        <md-icon ng-switch-when="night">store</md-icon>
+                        <md-icon ng-switch-when="night">local_bar</md-icon>
                     </md-card-avatar>
                     <md-card-header-text>
-                        <span class="md-title">Angular</span>
-                        <span class="md-subhead">Material</span>
+                        <span class="md-title" style="text-transform: capitalize">{{place._placeType}}</span>
+                        <!--<span class="md-subhead">{{place.category_name}}</span>-->
                     </md-card-header-text>
                 </md-card-header>
                 <div style="max-height: 200px; overflow: hidden">
                     <img ng-src="{{place.image}}" class="md-card-image" style="min-width: 100%;transform: translate(-25%,-25%);">
                 </div>
-
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">{{place.name}}</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <p>{{place.category_name}}</p>
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button class="md-raised md-primary" ng-click="gotoPlace(place.id)">details</md-button>
+                    <md-button class="md-accent" ng-click="openReplaceDialog($event,place._placeType)">Replace</md-button>
+                </md-card-actions>
             </md-card>
+        </md-content>
+
     </div>
 </div>

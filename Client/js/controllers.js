@@ -9,7 +9,8 @@ angular.module('app')
         $scope.goto = function (page) {
             state.currentPage = page;
         }
-        $scope.gotoPlace = function (placeId) {
+        $scope.gotoPlace = function gotoPlace(placeId) {
+            if(!placeId) throw new Error('Missing place id in gotoPlace');
             state.currentPage = 'places';
             state.placeCurrentPage = 'place';
             state.currentPlaceId = placeId;
@@ -113,24 +114,34 @@ angular.module('app')
     })
     .controller('placesSearchCtrl', function ($scope, state, $q, searchPlaces) {
         var pageSize = 20;
-        $scope.currentPage = 0;
-        $scope.searchText = '';
-        $scope.search = function (pageNumber) {
+        $scope.resetSearch = function(){
+            $scope.currentPage = 0;
+            $scope.searchText = '';
+            $scope.showResults = false;
+        };
+
+        $scope.textSearch = function (pageNumber) {
             if (!$scope.searchText) {
                 return; //todo report to user that there must be search text
             }
+            $scope.showResults = false;
             var searchedText = $scope.searchText;
             pageNumber = pageNumber || 0;
             $scope.currentPage = pageNumber;
 
             //mock creation
             $scope.places = [];
-            searchPlaces($scope.searchText, pageSize, pageNumber * pageSize)
+            searchPlaces.textSearch($scope.searchText, pageSize, pageNumber * pageSize)
                 .then(function (places) {
                     $scope.places = places;
-                    state.resultsQuery = searchedText;
+                    $scope.resultsQuery = searchedText;
+                    $scope.showResults = true;
                 })
-        }
+        };
+        $scope.filterSearch = function(){
+
+        };
+
     })
     .controller('placeDetailsCtrl', function ($scope, state, placesConnection) {
         $scope.init = function () {
