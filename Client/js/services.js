@@ -145,13 +145,19 @@ angular.module('app')
         function getDay(params) {
             //TODO
             var rawResponse = {
-                breakfast: {}
+                morning: {
+                    name: 'Name',
+                    category_name: 'Category Name',
+                    url: 'http://google.com',
+                    phone: '(054) 7564553',
+                    address: 'TAU',
+                    image: 'https://bower.io/img/bower-logo.png'
+                }
             };
-            var myResponse = lodash.map(function(place,key){//converts to array with type inside
+            var myResponse = lodash.map(rawResponse,function(place,key){//converts to array with type inside
                 place._placeType = key;
                 return place;
-            })
-
+            });
             return $q.resolve(myResponse);
         }
 

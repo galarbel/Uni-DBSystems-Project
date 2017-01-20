@@ -34,23 +34,39 @@
                     <p>I'm a night person!</p>
                     <md-checkbox class="md-secondary" ng-model="params.night"></md-checkbox>
                 </md-list-item>
-                <md-list-item ng-if="params.night">
+                <md-list-item >
                     <p>But I still want to eat breakfast</p>
-                    <md-checkbox class="md-secondary" ng-model="params.nightAndBreakfast"></md-checkbox>
+                    <md-checkbox ng-disabled="!params.night" class="md-secondary" ng-model="params.nightAndBreakfast"></md-checkbox>
                 </md-list-item>
             </md-list>
         </md-content>
-
-
         <div flex></div>
         <md-divider></md-divider>
         <div layout="row">
             <p flex></p>
-            <md-button flex="nogrow" ng-click="null" class="md-primary md-raised">Search</md-button>
+            <md-button flex="nogrow" ng-click="findDay()" class="md-primary md-raised">Search</md-button>
         </div>
     </md-sidenav>
 
-    <div>
+    <div >
         <md-button ng-click="openReplaceDialog($event,'TODO')">debug open replace dialog</md-button>
+            <md-card ng-repeat="place in day" style="width:500px">
+                <md-card-header>
+                    <md-card-avatar ng-switch="place._placeType">
+                        <md-icon ng-switch-when="morning">wb_sunny</md-icon>
+                        <md-icon ng-switch-when="lunch">store</md-icon>
+                        <md-icon ng-switch-when="dinner">store</md-icon>
+                        <md-icon ng-switch-when="night">store</md-icon>
+                    </md-card-avatar>
+                    <md-card-header-text>
+                        <span class="md-title">Angular</span>
+                        <span class="md-subhead">Material</span>
+                    </md-card-header-text>
+                </md-card-header>
+                <div style="max-height: 200px; overflow: hidden">
+                    <img ng-src="{{place.image}}" class="md-card-image" style="min-width: 100%;transform: translate(-25%,-25%);">
+                </div>
+
+            </md-card>
     </div>
 </div>
