@@ -529,12 +529,12 @@ modules.xml
 
 
 ### NetBeans ###
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
+#nbproject/private/
+#build/
+#nbbuild/
+#dist/
+#nbdist/
+#.nb-gradle/
 
 
 ### Linux ###
@@ -599,8 +599,8 @@ hs_err_pid*
 
 
 ### Gradle ###
-.gradle
-/build/
+#.gradle
+#/build/
 
 # Ignore Gradle GUI config
 gradle-app.setting

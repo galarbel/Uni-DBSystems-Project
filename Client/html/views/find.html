@@ -1,3 +1,36 @@
-<div>
-    find
-</div>
+<md-content layout="column" ng-controller="placesSearchCtrl">
+<!--<md-content flex="nogrow" style="width: 1024px;border : 1px solid red" layout="column" ng-controller="placesSearchCtrl">-->
+    <div flex="noshrink" layout="row" layout-margin>
+        <div md-whiteframe="1" flex="grow" layout="row">
+            <input flex="grow" style="border: none; padding: 5px;" type="search" ng-model="searchText"/>
+            <div ng-show="searchText" ng-click="searchText=''" flex="noshrink" layout layout-align="center center"
+                 style="background: white; cursor: pointer">
+                <md-icon flex>close</md-icon>
+            </div>
+        </div>
+        <md-button class="md-primary md-raised" ng-click="search(0)">
+            Search
+        </md-button>
+    </div>
+    <md-toolbar ng-show="state.resultsQuery">
+        <div class="md-toolbar-tools">
+            <h2>Results for "{{state.resultsQuery}}"</h2>
+        </div>
+    </md-toolbar>
+    <md-content flex>
+        <md-list>
+            <md-list-item ng-repeat="pl in places" ng-click="gotoPlace(pl.id)"  class="md-2-line" layout="row">
+                <md-icon>restaurant</md-icon>
+                <div flex class="md-list-item-text" layout="column">
+                    <h3>{{pl.name}}</h3>
+                    <p>{{pl.description}}</p>
+                </div>
+                <md-icon class="md-secondary">zoom_out_map</md-icon>
+            </md-list-item>
+        </md-list>
+    </md-content>
+    <div>
+        <!--<cl-paging flex cl-pages="paging.total" cl-steps="6" cl-page-changed="paging.onPageChanged()" cl-align="start start" cl-current-page="paging.current"></cl-paging>-->
+
+    </div>
+</md-content>

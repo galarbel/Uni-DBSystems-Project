@@ -3,7 +3,8 @@ angular.module('app', [
     'ngMaterial',
     'ngLodash',
     'ngGeolocation',
-    'ngMap'
+    'ngMap',
+    'cl.paging'
 ])
 
     /*.value('configObjects',{
