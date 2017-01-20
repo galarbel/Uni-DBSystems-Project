@@ -10,7 +10,7 @@ angular.module('app')
             state.currentPage = page;
         }
         $scope.gotoPlace = function gotoPlace(placeId) {
-            if(!placeId) throw new Error('Missing place id in gotoPlace');
+            // if(!placeId) throw new Error('Missing place id in gotoPlace');
             state.currentPage = 'places';
             state.placeCurrentPage = 'place';
             state.currentPlaceId = placeId;
@@ -60,7 +60,7 @@ angular.module('app')
                         }
                         return i;
                     }, -1);
-                    if(indexOfPlace === -1){
+                    if (indexOfPlace === -1) {
                         console.error(replacement);
                         throw new Error("Can't find place to insert replacement");
                     }
@@ -112,12 +112,22 @@ angular.module('app')
     .controller('placesCtrl', function ($scope, state) {
 
     })
-    .controller('placesSearchCtrl', function ($scope, state, $q, searchPlaces) {
+    .controller('placesSearchCtrl', function ($scope, state, $q, searchPlaces, staticServerData) {
         var pageSize = 20;
-        $scope.resetSearch = function(){
+
+        staticServerData.cities.then(function (cities) {
+            $scope.cities = cities;
+        });
+        staticServerData.categories.then(function (categories) {
+            $scope.categories = categories;
+        });
+
+        $scope.resetSearch = function () {
             $scope.currentPage = 0;
             $scope.searchText = '';
             $scope.showResults = false;
+            $scope.params = {};
+            $scope.filtersForm.$setPristine();
         };
 
         $scope.textSearch = function (pageNumber) {
@@ -132,15 +142,23 @@ angular.module('app')
             //mock creation
             $scope.places = [];
             searchPlaces.textSearch($scope.searchText, pageSize, pageNumber * pageSize)
-                .then(function (places) {
-                    $scope.places = places;
+                .then(resultsHandler).then(function () {
                     $scope.resultsQuery = searchedText;
-                    $scope.showResults = true;
                 })
         };
-        $scope.filterSearch = function(){
-
+        $scope.filterSearch = function (pageNumber) {
+            if($scope.filtersForm.$invalid){
+                return; //todo report to user that there must be search text
+            }
+            searchPlaces.filterSearch($scope.params,pageSize,pageNumber * pageSize)
+                .then(resultsHandler)
         };
+
+        function resultsHandler(places){
+            $scope.places = places;
+            $scope.showResults = true;
+            return places;
+        }
 
     })
     .controller('placeDetailsCtrl', function ($scope, state, placesConnection) {
@@ -153,7 +171,7 @@ angular.module('app')
                 .catch(function (err) {
                     //TODO
                 })
-        }
+        };
         function imgStyle(place) {
             if (!place) {
                 return {};

@@ -9,7 +9,14 @@ angular.module('app')
     })
     .factory('server', function ($http, config) {
         var server = {};
-        var url = server.url = config.server.url + ':' + config.server.port + "/";
+        var url = server.url = config.server.url + "/";
+
+        server.getCities = function getCities(){
+            return $http.get(url + 'cities');
+        };
+        server.getCategories = function getCategories(){
+            return $http.get(url + 'categories');
+        };
 
         server.getEnums = function getEnums() {
             return $http.get(url + "enums");
@@ -228,7 +235,7 @@ angular.module('app')
             //real code
             data.forEach(function(place){
                 place._placeType = replaceType;
-            })
+            });
             return $q.resolve(data)
         }
 
@@ -241,3 +248,19 @@ angular.module('app')
             getReplacement:getReplacement
         }
     })
+    .factory('staticServerData', function(server){
+        /*function error(e){
+            console.error("Error loading resource",e)
+        }*/
+        function error(){
+            //mock returner
+            return [{
+                id : 1,
+                name: "Name"
+            }];
+        }
+        return {
+            cities : server.getCities().catch(error),
+            categories : server.getCategories().catch(error),
+        }
+    });

@@ -1,9 +1,9 @@
 <md-content layout="column" ng-controller="placesSearchCtrl" ng-init="resetSearch()">
     <!--<md-content flex="nogrow" style="width: 1024px;border : 1px solid red" layout="column" ng-controller="placesSearchCtrl">-->
 
-    <div layout="column" layout-margin>
+    <div layout="column" layout-margin ng-hide="showResults">
         <h3 class="md-display-1">
-Choose a search method to find the place to eat at:
+            Choose a search method to find the place to eat at:
         </h3>
         <div layout="column" md-whiteframe="3">
             <md-toolbar>
@@ -18,7 +18,7 @@ Choose a search method to find the place to eat at:
                         <md-icon flex>close</md-icon>
                     </div>
                 </div>
-                <md-button class="md-primary md-raised" ng-click="textSearch(0)">
+                <md-button class="md-primary md-raised" ng-disabled="!searchText" ng-click="textSearch(0)">
                     Search
                 </md-button>
             </div>
@@ -27,14 +27,51 @@ Choose a search method to find the place to eat at:
             <md-toolbar>
                 <h1 class="md-toolbar-tools">... or search places by properties</h1>
             </md-toolbar>
+            <div flex="noshrink" layout="column" layout-margin>
+                <form name="filtersForm" layout="column" >
+                    <div layout="row">
+                        <md-slider-container flex="50">
+                            <p style="min-width: 70px">Price</p>
+                            <md-slider flex md-discrete step="1" min="0" max="4" ng-model="params.price"></md-slider>
+                        </md-slider-container>
+                        <md-slider-container flex="50">
+                            <p style="min-width: 70px">Minimum Rating</p>
+                            <md-slider flex min="0" max="10" md-discrete step="0.1"
+                                       ng-model="params.minRating"></md-slider>
+                        </md-slider-container>
+                    </div>
+                    <div layout="row">
+                        <md-select ng-model="params.city" placeholder="City" flex="33" required>
+                            <md-option ng-repeat="city in cities" ng-value="city.id">{{city.name}}</md-option>
+                        </md-select>
+                        <md-select ng-model="params.category" placeholder="Category" flex="33" required>
+                            <md-option ng-repeat="category in categories" ng-value="category.id">{{category.name}}
+                            </md-option>
+                        </md-select>
+                        <md-select ng-model="params.type" placeholder="Ideal For" flex="33" required>
+                            <md-option ng-value="'morning'">Morning</md-option>
+                            <md-option ng-value="'lunch'">Lunch</md-option>
+                            <md-option ng-value="'dinner'">Dinner</md-option>
+                            <md-option ng-value="'night'">Night</md-option>
+                        </md-select>
+                    </div>
+                    <div layout="row">
+                        <p flex=""></p>
+                        <md-button class="md-primary md-raised" ng-disabled="filtersForm.$invalid" ng-click="filterSearch(0)">
+                            Search
+                        </md-button>
+                    </div>
+                </form>
 
+
+            </div>
         </div>
     </div>
 
 
     <md-toolbar ng-show="showResults">
         <div class="md-toolbar-tools">
-            <h2>Results for "{{resultsQuery}}"</h2>
+            <h2>Results <span ng-show="resultsQuery">for "{{resultsQuery}}"</span></h2>
             <span flex></span>
             <md-button ng-click="resetSearch()">Search Again</md-button>
         </div>
