@@ -4,7 +4,7 @@ include_once '../Global/config.php';
 
 $sqlQuery = "call web_get_places_by_parameters (?, ?, ?, ?, ?)";
 
-$city_id = 1300;
+$city_id = null;
 $category_id = null;
 $max_price = 4;
 $meal_id = null;
