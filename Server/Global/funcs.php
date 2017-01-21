@@ -1,18 +1,7 @@
 <?php
 
-function addCategoriesToPlace(&$place) {
-    global $db;
-
-    $id = $place["place_id"];
-
-    $results = $db->rawQuery("call server_get_place_categories(?)", [$id]);
-
-    $place["categories"] = [];
-
-
-    foreach ($results as $category) {
-        $place["categories"][] = $category["category_name"];
-    }
+function parsePlaceCategories(&$place) {
+    $place["categoriesArray"] = explode(";", $place["categories"]);
 }
 
 function parsePlacePhoto(&$place) {
