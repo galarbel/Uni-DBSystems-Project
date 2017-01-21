@@ -9,6 +9,7 @@ $longi = -73.985088;
 $max_price = 4;
 $night_person = 1;
 $max_distance = 0.1;
+$force_morning = 0;
 
 if (isset($_REQUEST["latitude"]) && is_numeric($_REQUEST["latitude"])) {
     $lati = $_REQUEST["latitude"];
@@ -30,7 +31,11 @@ if (isset($_REQUEST["distance"]) && is_numeric($_REQUEST["distance"])) {
     $max_distance = $_REQUEST["distance"];
 }
 
-if (! ($lati && $longi && $max_price && $max_distance && $night_person)) {
+if (isset($_REQUEST["force_morning"]) && is_numeric($_REQUEST["force_morning"])) {
+    $force_morning = $_REQUEST["force_morning"];
+}
+
+if (! ($lati && $longi && $max_price && $max_distance && $night_person && $force_morning)) {
     echo "something went wrong";
     die;
 }
@@ -43,7 +48,7 @@ header('Content-type: application/json');
 $return = [];
 
 
-$requestsParams = [$lati, $longi, $max_price,$night_person,$max_distance];
+$requestsParams = [$lati, $longi, $max_price,$night_person,$max_distance,$force_morning];
 $results = $db->rawQuery($sqlQuery, $requestsParams);
 
 //echo json_encode($results); die;
