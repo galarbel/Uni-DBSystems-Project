@@ -15,9 +15,10 @@ $place_data = $db->rawQuery($getPlaceDataQuery, [$place_id])[0];
 
 $getReviewsQuery = "call web_get_reviews_by_place_id (?)";
 $place_reviews = $db->rawQuery($getReviewsQuery, [$place_id]);
-//print_r($place_reviews);
 $place_data["reviews_count"]= count($place_reviews);
-$place_data["reviews"]= json_encode($place_reviews);
+$place_data["reviews"]= json_decode(json_encode($place_reviews), true);
+
+//echo json_encode($place_data["reviews"]);
 
 echo json_encode($place_data);
 
