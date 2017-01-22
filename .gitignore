@@ -405,12 +405,12 @@ Temporary Items
 # .idea/misc.xml
 # *.ipr
 
-
+# dror commented this out ###################################################################################################################
 ### Bower ###
-bower_components
-.bower-cache
-.bower-registry
-.bower-tmp
+#bower_components
+#.bower-cache
+#.bower-registry
+#.bower-tmp
 
 
 ### Intellij ###
@@ -501,7 +501,8 @@ modules.xml
 
 
 ### Less ###
-*.css
+#dror commented
+#*.css
 
 
 ### SAS ###
@@ -523,7 +524,8 @@ modules.xml
 
 ### Sass ###
 .sass-cache/
-*.css.map
+#dror commented
+#*.css.map
 
 
 ### NetBeans ###
