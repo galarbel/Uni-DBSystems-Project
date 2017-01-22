@@ -30,11 +30,10 @@ function getVenusFromFourSquare($lati,$longi) {
 }
 
 
-function getVenueInformationFromFourSquare($id) {
+function getVenueStatsFromFourSquare($id) {
     global $fourSquareInfoFormatURL;
-
-    $url = sprintf($fourSquareInfoFormatURL, $id);
-
+    $fourSquare_v = date('Ymd');
+    $url = sprintf($fourSquareInfoFormatURL . "&v=" . $fourSquare_v, $id);
     $curlResult = curlCall($url);
 
     return $curlResult;

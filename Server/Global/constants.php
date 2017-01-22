@@ -33,6 +33,6 @@ $fourSquareSearchURL .= "&limit=" . $foursquare_limit;
 $fourSquareInfoFormatURL = $fourSquareAPI . "/%s";
 $fourSquareInfoFormatURL .= "?client_id=" . $fourSquare_client_id;
 $fourSquareInfoFormatURL .= "&client_secret=" . $fourSquare_client_secret;
-$fourSquareInfoFormatURL .= "&v=" . $fourSquare_v;
+//$fourSquareInfoFormatURL .= "&v=" . $fourSquare_v;
 /*-----------------------------*/
 ?>
