@@ -69,13 +69,16 @@ while (sizeof($places) > 0) {
         if (isset($v->tips->groups[0])) {
             foreach ($v->tips->groups[0]->items as $review) {
 
-                $reviewText     = $review->text;
-                $reviewLikes    = $review->likes->count;
-                $reviewRating   = null;
+                $reviewFirstName    = $review->user->firstName;
+                $reviewLastName     = $review->user->lastName;
 
-                $reviewParams = [$id, $reviewText, $reviewRating, $reviewLikes];
+                $reviewCreatedTime  = $review->createdAt;
+                $reviewText         = $review->text;
+                $reviewLikes        = $review->likes->count;
 
-                $db->rawQuery("call dbPopulate_ins_review (?, ?, ?, ?)", $reviewParams);
+                $reviewParams = [$id, $reviewFirstName, $reviewLastName, $reviewText,$reviewLikes, $reviewCreatedTime];
+
+                $db->rawQuery("call dbPopulate_ins_review (?, ?, ?, ?, ?, ?)", $reviewParams);
             }
         }
 
