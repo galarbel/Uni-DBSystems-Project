@@ -25,7 +25,7 @@ if (!$category_id) {
 header('Content-type: application/json');
 
 $requestsParams = [$category_id, $max_price];
-$results = $db->rawQuery($sqlQuery, $requestsParams);
+$results = $db->rawQuery($sqlQuery, $requestsParams)[0];
 
 
 echo json_encode($results);
