@@ -2,14 +2,14 @@
 
 include_once '../Global/config.php';
 
-$sqlQuery = "call web_get_culinary_day (?, ?, ?, ?, ?)";
+$sqlQuery = "call web_get_culinary_day (?, ?, ?, ?, ?, ?)";
 
 $lati = 40.759082; /*Times Square , NY */
 $longi = -73.985088;
 $max_price = 4;
 $night_person = 1;
 $max_distance = 0.1;
-$force_morning = 0;
+$force_morning = 1;
 
 if (isset($_REQUEST["latitude"]) && is_numeric($_REQUEST["latitude"])) {
     $lati = $_REQUEST["latitude"];
@@ -35,7 +35,7 @@ if (isset($_REQUEST["force_morning"]) && is_numeric($_REQUEST["force_morning"]))
     $force_morning = $_REQUEST["force_morning"];
 }
 
-if (! ($lati && $longi && $max_price && $max_distance && $night_person && $force_morning)) {
+if (! ($lati && $longi && $max_price && $max_distance)) {
     echo "something went wrong";
     die;
 }
