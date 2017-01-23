@@ -2,8 +2,7 @@
 
 include_once '../Global/config.php';
 
-$sqlQuery = "SELECT * FROM Cities";
-// maybe add state?
+$sqlQuery = "SELECT city_id, city_name FROM Cities ";
 
 header('Content-type: application/json');
 $results = $db->rawQuery($sqlQuery);
