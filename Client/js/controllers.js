@@ -16,6 +16,7 @@ angular.module('app')
             state.placeCurrentPage = 'place';
             state.currentPlaceId = placeId;
         }
+
     })
     .controller('dayCtrl', function ($scope, $mdDialog, state, lodash, placesConnection) {
         $scope.state = state;
@@ -82,8 +83,8 @@ angular.module('app')
         };
 
         $scope.params = {
-            price: 1,
-            distance: 1000,
+            price: 2,
+            distance: 500,
             night: false,
             nightAndBreakfast: false
         }
@@ -210,7 +211,7 @@ angular.module('app')
         $scope.addLike = function (review) {
             review._likeAdded = true;
             review.likes++;
-            placesConnection.addLikeToReview($scope.place.place_id, review.review_id)
+            placesConnection.addLikeToReview(review.review_id)
                 .then(function () {
                     //well done, nothing to do here
                 })
@@ -233,10 +234,13 @@ angular.module('app')
 
 
     })
-    .controller('travelCtrl', function ($scope,placesConnection) {
+    .controller('travelCtrl', function ($scope,placesConnection,staticServerData) {
+        staticServerData.categories.then(function(categories){
+            $scope.categories = categories;
+        });
         $scope.init = function () {
             $scope.categoryId = null;
-            $scope.price = 1;
+            $scope.price = 2;
             $scope.city = null;
         };
 

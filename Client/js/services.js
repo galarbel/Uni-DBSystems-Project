@@ -1,10 +1,22 @@
 angular.module('app')
-    .factory('util', function () {
+    .factory('geoGetter', function ($geolocation) {
+        function get() {
+            console.log("Trying to get user location from browser");
+            return $geolocation.getCurrentPosition({
+                enableHighAccuracy: true
+            })
+                .then(function (location) {
+                    var lat = location.coords.latitude;
+                    var lon = location.coords.longitude;
+                    return {
+                        lat: lat,
+                        lon: lon
+                    }
+                })
+        }
+
         return {
-            /*imgObjToUrl : function(imageObj){
-             var size = Math.min(imageObj.width,imageObj.height);
-             return imageObj.prefix + size + 'x' + size + imageObj.suffix;
-             }*/
+            get: get
         }
     })
     .factory('server', function ($http, config) {
@@ -31,7 +43,6 @@ angular.module('app')
                     text: searchText
                 }
             }).then(extractData)
-
         };
 
         server.day = function (params) {
@@ -43,6 +54,42 @@ angular.module('app')
             return $http.get(url + 'get_day_plan_options.php', {
                 params: params
             }).then(extractData)
+        };
+
+        server.filterSearch = function (params) {
+            return $http.get(url + 'get_places_by_parameters.php', {
+                params: params
+            }).then(extractData)
+        };
+
+        server.placeDetails = function (placeId) {
+            return $http.get(url + 'update_place_stats.php', {
+                params: {
+                    place_id: placeId
+                }
+            }).then(extractData)
+        };
+
+        server.recommendCity = function (params) {
+            return $http.get(url + 'get_recommended_city.php', {
+                params: params
+            }).then(extractData)
+        };
+
+        server.addReview = function (id, review) {
+            return $http.post(url + 'add_review.php', review, {
+                params: {
+                    place_id: id
+                }
+            })
+        };
+
+        server.addLike = function (reviewId) {
+            return $http.put(url + 'add_review_like.php', null, {
+                params: {
+                    review_id: reviewId
+                }
+            })
         }
 
         return server;
@@ -59,28 +106,15 @@ angular.module('app')
             searchResults: null
         }
     })
-    .factory('geoGetter', function ($geolocation) {
-        function get() {
-            console.log("Trying to get user location from browser");
-            return $geolocation.getCurrentPosition({
-                enableHighAccuracy: true
-            })
-                .then(function (location) {
-                    var lat = location.coords.latitude;
-                    var lon = location.coords.longitude;
-                    return {
-                        lat: lat,
-                        lon: lon
-                    }
-                })
-        }
 
-        return {
-            get: get
-        }
-    })
     .factory('placesConnection', function ($http, $q, $timeout, lodash, server) {
         function _transformPlace(place) {
+            if (place.reviews) {
+                place.reviews = place.reviews.map(function (review) {
+                    throw new Error("IMPLEMENT!!!");
+                    return {}
+                })
+            }
             return {
                 id: place.place_id,
                 name: place.place_name,
@@ -97,41 +131,49 @@ angular.module('app')
             return places.map(_transformPlace);
         }
 
+        function _logAndThrow(err) {
+            console.error(err);
+            throw err;
+        }
+
         function getById(id) {
-            //mock
-            return $timeout(angular.noop, 150)
-                .then(function () {
-                    return {
-                        name: 'Place Name',
-                        categoryName: "Category Name",
-                        state: 'NY',
-                        city: 'New York',
-                        address: '1st Avenue 5342543',
-                        url: 'http://www.google.com',
-                        phone: '054-7564553',
-                        price: 3,
-                        reviews: [
-                            {
-                                text: 'lorem ipsum',
-                                likes: 5
-                            }
-                        ],
-                        image: 'https://irs0.4sqi.net/img/general/500x500/11449240_IgInJOEVwqZhbTA90Dx-M7S0Kmuz3bAGm_uiP5w3LFg.jpg'
-                    }
-                })
+            return server.placeDetails(id)
+                .then(_transformPlace)
+                .catch(_logAndThrow);
+            /* //mock
+             return $timeout(angular.noop, 150)
+             .then(function () {
+             return {
+             name: 'Place Name',
+             categoryName: "Category Name",
+             state: 'NY',
+             city: 'New York',
+             address: '1st Avenue 5342543',
+             url: 'http://www.google.com',
+             phone: '054-7564553',
+             price: 3,
+             reviews: [
+             {
+             text: 'lorem ipsum',
+             likes: 5
+             }
+             ],
+             image: 'https://irs0.4sqi.net/img/general/500x500/11449240_IgInJOEVwqZhbTA90Dx-M7S0Kmuz3bAGm_uiP5w3LFg.jpg'
+             }
+             })*/
         }
 
         function addReview(placeId, review) {
-            //TODO
-            return $q.resolve(review);
+            return server.addReview(placeId, {
+                review_text: review.text,
+                first_name: review.firstName,
+                last_name: review.lastName || undefined
+            })
+                .catch(_logAndThrow);
         }
 
-        function addLikeToReview(placeId, reviewId) {
-            return $q.resolve();
-        }
-
-        function refreshPlaceData(id) {
-            //TODO make the server refresh likes to this place
+        function addLikeToReview(reviewId) {
+            return server.addLike(reviewId);
         }
 
         function _transformDayParams(params) {
@@ -148,54 +190,53 @@ angular.module('app')
         function getDay(params) {
             return server.day(_transformDayParams(params))
                 .then(function (day) {
-                    // var myResponse = lodash.map(rawResponse, function (place, key) {//converts to array with type inside
-                    //     place._placeType = key;
-                    //     return place;
-                    // });
-                    debugger;
-                    return day;
+                    return lodash.map(day, function (place, key) {//converts to array with type inside
+                        place._placeType = key;
+                        return place;
+                    });
                 })
+                .catch(_logAndThrow);
 
-            //TODO
-            var rawResponse = {
-                morning: {
-                    name: 'Name',
-                    category_name: 'Category Name',
-                    url: 'http://google.com',
-                    phone: '(054) 7564553',
-                    address: 'TAU',
-                    image: 'https://bower.io/img/bower-logo.png'
-                },
-                lunch: {
-                    name: 'Name',
-                    category_name: 'Category Name',
-                    url: 'http://google.com',
-                    phone: '(054) 7564553',
-                    address: 'TAU',
-                    image: 'https://bower.io/img/bower-logo.png'
-                },
-                dinner: {
-                    name: 'Name',
-                    category_name: 'Category Name',
-                    url: 'http://google.com',
-                    phone: '(054) 7564553',
-                    address: 'TAU',
-                    image: 'https://bower.io/img/bower-logo.png'
-                },
-                night: {
-                    name: 'Name',
-                    category_name: 'Category Name',
-                    url: 'http://google.com',
-                    phone: '(054) 7564553',
-                    address: 'TAU',
-                    image: 'https://bower.io/img/bower-logo.png'
-                }
-            };
-            var myResponse = lodash.map(rawResponse, function (place, key) {//converts to array with type inside
-                place._placeType = key;
-                return place;
-            });
-            return $q.resolve(myResponse);
+            /* //TODO
+             var rawResponse = {
+             morning: {
+             name: 'Name',
+             category_name: 'Category Name',
+             url: 'http://google.com',
+             phone: '(054) 7564553',
+             address: 'TAU',
+             image: 'https://bower.io/img/bower-logo.png'
+             },
+             lunch: {
+             name: 'Name',
+             category_name: 'Category Name',
+             url: 'http://google.com',
+             phone: '(054) 7564553',
+             address: 'TAU',
+             image: 'https://bower.io/img/bower-logo.png'
+             },
+             dinner: {
+             name: 'Name',
+             category_name: 'Category Name',
+             url: 'http://google.com',
+             phone: '(054) 7564553',
+             address: 'TAU',
+             image: 'https://bower.io/img/bower-logo.png'
+             },
+             night: {
+             name: 'Name',
+             category_name: 'Category Name',
+             url: 'http://google.com',
+             phone: '(054) 7564553',
+             address: 'TAU',
+             image: 'https://bower.io/img/bower-logo.png'
+             }
+             };
+             var myResponse = lodash.map(rawResponse, function (place, key) {//converts to array with type inside
+             place._placeType = key;
+             return place;
+             });
+             return $q.resolve(myResponse);*/
         }
 
         /**
@@ -204,45 +245,68 @@ angular.module('app')
          * @param replaceType {string} "Enum" representing if it's evening, breakfast etc.
          */
         function getReplacement(params, replaceType) {
-            //TODO
-            //mock
-            var mock = {
-                name: 'replacement',
-                category_name: 'Category Name',
-                url: 'http://google.com',
-                phone: '(054) 7564553',
-                address: 'TAU',
-                image: 'https://bower.io/img/bower-logo.png'
+            var typeEnum = {
+                morning: 1,
+                lunch: 2,
+                dinner: 3,
+                night: 4
             };
-            mock = [1, 2, 3, 4, 5].map(function () {
-                return mock;
-            });
-            var data = mock;
-            //real code
-            data.forEach(function (place) {
-                place._placeType = replaceType;
-            });
-            return $q.resolve(data)
+            return server.replace(angular.extend(_transformDayParams(params), {
+                meal: typeEnum[replaceType]
+            })).then(function (replacements) {
+                replacements.forEach(function (place) {
+                    place._placeType = replaceType;
+                });
+                return replacements
+            })
+
+            /* //TODO
+             //mock
+             var mock = {
+             name: 'replacement',
+             category_name: 'Category Name',
+             url: 'http://google.com',
+             phone: '(054) 7564553',
+             address: 'TAU',
+             image: 'https://bower.io/img/bower-logo.png'
+             };
+             mock = [1, 2, 3, 4, 5].map(function () {
+             return mock;
+             });
+             var data = mock;
+             //real code
+             data.forEach(function (place) {
+             place._placeType = replaceType;
+             });
+             return $q.resolve(data)*/
         }
 
         function refreshStatsFromFourSquare(placeId) {
-            return $q.resolve({});
+            return server.placeDetails(placeId);
         }
 
         function getCityRecommendation(categoryId, price) {
-            return $q.resolve();
+            return server.recommendCity({
+                categoryId: categoryId,
+                price: price
+            })
+                .then(function (details) {
+                    return {
+                        city: details.city_name,
+                        score: details.avg_score
+                    }
+                })
+                .catch(_logAndThrow)
         }
 
 
         /**
          * query string is search text
          */
-        function textSearch(queryString, limit, skip) {
+        function textSearch(queryString) {
             return server.textSearch(queryString)
                 .then(_transformPlaces)
-                .catch(function (err) {
-                    console.error(err);
-                })
+                .catch(_logAndThrow);
 
             //mock
             // var places = [];
@@ -259,25 +323,31 @@ angular.module('app')
         }
 
         function filterSearch(params, limit, skip) {
+            return server.filterSearch({
+                city: params.city,
+                category: params.category,
+                price: params.price,
+                meal: params.type,
+                m_rating: params.minRating
+            });
             //mock
-            var places = [];
-            for (var i = skip; i < skip + limit; i++) {
-                places.push({
-                    id: 'mockId' + i,
-                    name: 'Name' + i,
-                    description: 'Desc'
-                })
-            }
-            return $timeout(angular.noop, 350).then(function () {
-                return places;
-            })
+            /*var places = [];
+             for (var i = skip; i < skip + limit; i++) {
+             places.push({
+             id: 'mockId' + i,
+             name: 'Name' + i,
+             description: 'Desc'
+             })
+             }
+             return $timeout(angular.noop, 350).then(function () {
+             return places;
+             })*/
         }
 
         return {
             getById: getById,
             addReview: addReview,
             addLikeToReview: addLikeToReview,
-            refreshPlaceData: refreshPlaceData,
             getDay: getDay,
             getReplacement: getReplacement,
             refreshStatsFromFourSquare: refreshStatsFromFourSquare,
@@ -286,20 +356,27 @@ angular.module('app')
             filterSearch: filterSearch
         }
     })
-    .factory('staticServerData', function (server) {
-        /*function error(e){
-         console.error("Error loading resource",e)
-         }*/
-        function error() {
-            //mock returner
-            return [{
-                id: 1,
-                name: "Name"
-            }];
+    .factory('staticServerData', function (server, lodash, $q) {
+        function error(e) {
+            console.error("Error loading resource", e)
         }
 
-        return {
+        /*        function error() {
+         //mock returner
+         return [{
+         id: 1,
+         name: "Name"
+         }];
+         }*/
+
+        var getters = {
             cities: server.getCities().catch(error),
             categories: server.getCategories().catch(error),
-        }
+        };
+        lodash.forEach(getters, function (getter, getterName) {
+            getter.then(function (response) {
+                getters[getterName] = $q.resolve(response);
+            })
+        })
+        return getters;
     });
