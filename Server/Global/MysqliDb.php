@@ -425,6 +425,7 @@ class MysqliDb
      */
     public function rawQuery($query, $bindParams = null)
     {
+        try {
         $params = array(''); // Create the empty 0 index
         $this->_query = $query;
         $stmt = $this->_prepareQuery();
@@ -447,6 +448,10 @@ class MysqliDb
         $this->reset();
 
         return $res;
+        } catch (Exception $e) {
+            http_response_code(500);
+            die;
+        }
     }
 
     /**

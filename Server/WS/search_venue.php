@@ -17,6 +17,10 @@ if (isset($_REQUEST["text"]) ) {
 header('Content-type: application/json');
 
 $results = $db->rawQuery($sqlQuery, [$text_searched]);
+for ($i = 0; $i < sizeof($results); $i++) {
+    parsePlaceCategories($results[$i]);
+    parsePlacePhoto($results[$i]);
+}
 
 echo json_encode($results);
 

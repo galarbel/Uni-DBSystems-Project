@@ -2,27 +2,29 @@
 
 include_once '../Global/config.php';
 
-if (!isset($_REQUEST["place_id"])) {
-    echo 'missing \'place_id\' parameter'; die;
+$post_body = json_decode(file_get_contents('php://input'), true);
+
+if (!isset($_REQUEST["place_id"]) || !is_numeric($_REQUEST["place_id"])) {
+    badRequest("missing 'place_id' parameter or not numeric");
 }
-if (!isset($_REQUEST["review_text"])) {
-    echo 'missing \'review_text\' parameter'; die;
+if (!isset($post_body["review_text"])) {
+    badRequest("missing 'review_text'");
 }
-if (!isset($_REQUEST["first_name"])) {
-    echo 'missing \'first_name\' parameter'; die;
+
+if (!isset($post_body["first_name"])) {
+    badRequest("missing 'first_name'");
 }
 
 header('Content-type: application/json');
 
 $place_id = $_REQUEST["place_id"];
-$review_text = $_REQUEST["review_text"];
-$first_name = $_REQUEST["first_name"];
-$last_name = isset($_REQUEST["last_name"]) ? $_REQUEST["last_name"] : null; // last name is optional
+$review_text = $post_body["review_text"];
+$first_name = $post_body["first_name"];
+$last_name = isset($post_body["last_name"]) ? $post_body["last_name"] : null; // last name is optional
 
 
 $sqlQuery = "call web_insert_review (?, ?, ?, ?)";
 $results = $db->rawQuery($sqlQuery, [$place_id, $first_name, $last_name, $review_text]);
 
-// TODO- error handling
 ?>
 
