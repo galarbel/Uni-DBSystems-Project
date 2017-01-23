@@ -4,7 +4,7 @@ include_once '../Global/config.php';
 
 $post_body = json_decode(file_get_contents('php://input'), true);
 
-if (!isset($_REQUEST["place_id"]) || !is_numeric($_REQUEST["place_id"])) {
+if (!isset($post_body["place_id"]) || !is_numeric($post_body["place_id"])) {
     badRequest("missing 'place_id' parameter or not numeric");
 }
 if (!isset($post_body["review_text"])) {
@@ -17,7 +17,7 @@ if (!isset($post_body["first_name"])) {
 
 header('Content-type: application/json');
 
-$place_id = $_REQUEST["place_id"];
+$place_id = $post_body["place_id"];
 $review_text = $post_body["review_text"];
 $first_name = $post_body["first_name"];
 $last_name = isset($post_body["last_name"]) ? $post_body["last_name"] : null; // last name is optional

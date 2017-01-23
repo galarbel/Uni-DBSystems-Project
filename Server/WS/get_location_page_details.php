@@ -19,7 +19,7 @@ $db=new MysqliDb ($DBServer, $DBUsername, $DBPassword, $DBName);
 $getReviewsQuery = "call web_get_reviews_by_place_id (?)";
 $place_reviews = $db->rawQuery($getReviewsQuery, [$place_id]);
 $place_data["reviews_count"]= count($place_reviews);
-$place_data["reviews"]= json_decode(json_encode($place_reviews), true);
+$place_data["reviews"]= $place_reviews;
 
 echo json_encode($place_data);
 
