@@ -19758,4 +19758,12 @@ header {
   vertical-align: top;
   padding-right: 5px; }
 
+.place-pic-day {
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat; }
+
 /*# sourceMappingURL=main.css.map */

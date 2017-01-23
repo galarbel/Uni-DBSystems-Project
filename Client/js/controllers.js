@@ -1,5 +1,5 @@
 angular.module('app')
-    .controller('appCtrl', function ($scope, state) {
+    .controller('appCtrl', function ($scope,$rootScope, state, $mdToast) {
         $scope.state = state;
         var lastPage;
         $scope.$watch('state.currentPage', function (v) {
@@ -17,8 +17,20 @@ angular.module('app')
             state.currentPlaceId = placeId;
         }
 
+        $rootScope.errToast = function (msg) {
+            $mdToast.show(
+                $mdToast.simple()
+                    .textContent(msg)
+                    .position('top right')
+                    .hideDelay(0)
+                    .action('ok')
+                    // .capsule(true)
+                    .theme('md-accent')
+                    .highlightAction(true)
+            );
+        };
     })
-    .controller('dayCtrl', function ($scope, $mdDialog, state, lodash, placesConnection) {
+    .controller('dayCtrl', function ($scope, $mdDialog, state, lodash, placesConnection, $mdToast) {
         $scope.state = state;
         $scope.$watch('state.ll', function (v) {
             $scope.userLocation = angular.extend({}, v);
@@ -49,7 +61,7 @@ angular.module('app')
                 .then(function (replacements) {
                     $scope.fetching = false;
                     if (!replacements || !replacements.length) {
-                        //TODO NO PLACES FOUND
+                        $scope.errToast("No Replacements Found");
                         return
                     }
                     return $mdDialog.show({
@@ -76,6 +88,7 @@ angular.module('app')
                 })
                 .catch(function (err) {
                     console.error(err);
+                    $scope.errToast("Something bad happened");
                 });
         };
 
@@ -85,8 +98,12 @@ angular.module('app')
             angular.extend($scope.params, $scope.userLocation);
             placesConnection.getDay($scope.params)
                 .then(function (day) {
-                    $scope.fetching=false;
+                    $scope.fetching = false;
                     $scope.day = day;
+                })
+                .catch(function (err) {
+                    console.error(err);
+                    $scope.errToast("Something bad happened");
                 })
         };
 
@@ -124,7 +141,6 @@ angular.module('app')
 
     })
     .controller('placesSearchCtrl', function ($scope, state, $q, placesConnection, staticServerData) {
-        var pageSize = 20;
 
         staticServerData.cities.then(function (cities) {
             $scope.cities = cities;
@@ -158,30 +174,34 @@ angular.module('app')
 
         };
 
-        $scope.textSearch = function (pageNumber) {
+        $scope.textSearch = function () {
             if (!$scope.searchText) {
                 return; //todo report to user that there must be search text
             }
             $scope.showResults = false;
             var searchedText = $scope.searchText;
-            pageNumber = pageNumber || 0;
-            $scope.currentPage = pageNumber;
 
-            //mock creation
             $scope.places = [];
             $scope.fetching = true;
-            placesConnection.textSearch($scope.searchText, pageSize, pageNumber * pageSize)
+            placesConnection.textSearch($scope.searchText)
                 .then(resultsHandler).then(function () {
                 $scope.resultsQuery = searchedText;
+            }).catch(function (err) {
+                console.error(err);
+                $scope.errToast("Something bad happened");
             })
         };
-        $scope.filterSearch = function (pageNumber) {
+        $scope.filterSearch = function () {
             if ($scope.filtersForm.$invalid) {
                 return; //todo report to user that there must be search text
             }
             $scope.fetching = true;
-            placesConnection.filterSearch($scope.params, pageSize, pageNumber * pageSize)
-                .then(resultsHandler);
+            placesConnection.filterSearch($scope.params)
+                .then(resultsHandler)
+                .catch(function (err) {
+                    console.error(err);
+                    $scope.errToast("Something bad happened");
+                })
         };
 
         function resultsHandler(places) {
@@ -192,7 +212,7 @@ angular.module('app')
         }
 
     })
-    .controller('placeDetailsCtrl', function ($scope, state, placesConnection) {
+    .controller('placeDetailsCtrl', function ($scope, state, placesConnection, $mdToast) {
         var newReview = {//const
             firstName: '',
             lastName: '',
@@ -209,7 +229,8 @@ angular.module('app')
                     return $scope.place = place;
                 })
                 .catch(function (err) {
-                    //TODO
+                    $scope.errToast("Something bad happened");
+                    console.error(err);
                 })
         };
 
@@ -235,6 +256,7 @@ angular.module('app')
                 })
                 .catch(function (err) {
                     console.error(err);
+                    $scope.errToast("Something bad happened");
                 })
                 .finally(function () {
                     $scope.sendingReview = false;
@@ -257,6 +279,7 @@ angular.module('app')
                 })
                 .catch(function (err) {
                     console.error(err);
+                    $scope.errToast("Something bad happened");
                     review.likes--;
                 })
         };
@@ -265,11 +288,12 @@ angular.module('app')
             $scope.fetching = true;
             placesConnection.refreshStatsFromFourSquare(placeId)
                 .then(function (newData) {
+
                     $scope.fetching = false;
                     angular.extend($scope.place, newData);
                 })
                 .catch(function (error) {
-                    //TODO
+                    $scope.errToast("Something bad happened");
                     console.error(error);
                 })
         }
@@ -294,6 +318,10 @@ angular.module('app')
             placesConnection.getCityRecommendation($scope.categoryId, $scope.price)
                 .then(function (city) {
                     $scope.city = city;
+                })
+                .catch(function (err) {
+                    console.error(err);
+                    $scope.errToast("Something bad happened");
                 })
         }
     });

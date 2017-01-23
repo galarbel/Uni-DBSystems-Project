@@ -218,46 +218,7 @@ angular.module('app')
                 .then(_transformPlaces)
                 .catch(_logAndThrow);
 
-            /* //TODO
-             var rawResponse = {
-             morning: {
-             name: 'Name',
-             category_name: 'Category Name',
-             url: 'http://google.com',
-             phone: '(054) 7564553',
-             address: 'TAU',
-             image: 'https://bower.io/img/bower-logo.png'
-             },
-             lunch: {
-             name: 'Name',
-             category_name: 'Category Name',
-             url: 'http://google.com',
-             phone: '(054) 7564553',
-             address: 'TAU',
-             image: 'https://bower.io/img/bower-logo.png'
-             },
-             dinner: {
-             name: 'Name',
-             category_name: 'Category Name',
-             url: 'http://google.com',
-             phone: '(054) 7564553',
-             address: 'TAU',
-             image: 'https://bower.io/img/bower-logo.png'
-             },
-             night: {
-             name: 'Name',
-             category_name: 'Category Name',
-             url: 'http://google.com',
-             phone: '(054) 7564553',
-             address: 'TAU',
-             image: 'https://bower.io/img/bower-logo.png'
-             }
-             };
-             var myResponse = lodash.map(rawResponse, function (place, key) {//converts to array with type inside
-             place._placeType = key;
-             return place;
-             });
-             return $q.resolve(myResponse);*/
+
         }
 
         /**
@@ -360,9 +321,10 @@ angular.module('app')
             filterSearch: filterSearch
         }
     })
-    .factory('staticServerData', function (server, lodash, $q) {
+    .factory('staticServerData', function (server, lodash, $q,$rootScope) {
         function error(e) {
-            console.error("Error loading resource", e)
+            console.error("Error loading resource", e);
+            $rootScope.errToast("Problem loading options for form")
         }
 
         /*        function error() {

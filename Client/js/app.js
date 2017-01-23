@@ -6,6 +6,22 @@ angular.module('app', [
     'ngMap',
     'cl.paging'
 ])
+    // .config(function($mdToastProvider){
+    //     $mdToastProvider.addPreset('error', {
+    //         options: function() {
+    //             return {
+    //                 template:
+    //                 '<md-toast>' +
+    //                 '<div class="md-toast-content">' +
+    //                 '{{toast.msg}}' +
+    //                 '</div>' +
+    //                 '</md-toast>',
+    //                 controllerAs: 'toast',
+    //                 bindToController: true
+    //             };
+    //         }
+    //     });
+    // })
 
     /*.value('configObjects',{
         locationDialog: {

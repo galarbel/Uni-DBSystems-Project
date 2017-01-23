@@ -34,9 +34,10 @@
                     <p>I'm a night person!</p>
                     <md-checkbox class="md-secondary" ng-model="params.night"></md-checkbox>
                 </md-list-item>
-                <md-list-item >
+                <md-list-item>
                     <p>But I still want to eat breakfast</p>
-                    <md-checkbox ng-disabled="!params.night" class="md-secondary" ng-model="params.nightAndBreakfast"></md-checkbox>
+                    <md-checkbox ng-disabled="!params.night" class="md-secondary"
+                                 ng-model="params.nightAndBreakfast"></md-checkbox>
                 </md-list-item>
             </md-list>
         </md-content>
@@ -66,8 +67,9 @@
                         <!--<span class="md-subhead">{{place.category_name}}</span>-->
                     </md-card-header-text>
                 </md-card-header>
-                <div style="max-height: 200px; overflow: hidden">
-                    <img ng-src="{{place.image}}" class="md-card-image" style="min-width: 100%;transform: translate(-25%,-25%);">
+                <div class="place-pic-day" style="background-image: url({{place.image}});" >
+                    <!--<img ng-src="{{place.image}}" class="md-card-image"-->
+                         <!--style="min-width: 100%; position:absolute">-->
                 </div>
                 <md-card-title>
                     <md-card-title-text>
@@ -79,13 +81,14 @@
                 </md-card-content>
                 <md-card-actions layout="row" layout-align="end center">
                     <md-button class="md-raised md-primary" ng-click="gotoPlace(place.id)">details</md-button>
-                    <md-button class="md-accent" ng-click="openReplaceDialog($event,place._placeType)">Replace</md-button>
+                    <md-button class="md-accent" ng-click="openReplaceDialog($event,place._placeType)">Replace
+                    </md-button>
                 </md-card-actions>
             </md-card>
         </md-content>
 
     </div>
-    <div flex="" ng-show="fetching" layout="column"  layout-align="center center" style="min-height:200px;">
+    <div flex="" ng-show="fetching" layout="column" layout-align="center center" style="min-height:200px;">
         <md-progress-circular md-mode="indeterminate"></md-progress-circular>
     </div>
 </div>

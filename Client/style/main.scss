@@ -6,7 +6,16 @@
 @import "header";
 
 .place-info-table th {
-  text-align:left;
+  text-align: left;
   vertical-align: top;
-  padding-right:5px;
+  padding-right: 5px;
+}
+
+.place-pic-day {
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
