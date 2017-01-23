@@ -81,7 +81,7 @@
             <md-list-item ng-repeat="pl in places" ng-click="gotoPlace(pl.id)" class="md-2-line" layout="row">
                 <img ng-src="{{pl.image}}" class="md-avatar" />
                 <div flex class="md-list-item-text" layout="column">
-                    <h3>{{pl.name}} ({{pl.rating}})</h3>
+                    <h3>{{pl.name}} ({{pl.rating || 'Unrated'}})</h3>
                     <p>{{pl.address}},
                         {{pl.city}},
                         {{pl.state}}{{pl.country.toLowerCase() !== 'united states' ? ', ' + pl.country : ''}}

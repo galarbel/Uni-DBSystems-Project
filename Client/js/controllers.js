@@ -204,6 +204,7 @@ angular.module('app')
             placesConnection.addReview($scope.place.id, sentReview)
                 .then(function () {
                     sentReview.likes = 0;
+                    sentReview.createdAt  = new Date();
                     $scope.place.reviews.unshift(sentReview);
                     $scope.newReview = angular.extend({}, newReview)
                 })
@@ -215,7 +216,13 @@ angular.module('app')
                 })
 
         };
-
+        $scope.arrayRepeat = function(n){
+            var r = [];
+            for(var i = 0; i< n ;i++){
+                r.push(i);
+            }
+            return r;
+        }
         $scope.addLike = function (review) {
             review._likeAdded = true;
             review.likes++;

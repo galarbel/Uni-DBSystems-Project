@@ -23,12 +23,12 @@
                     <tbody>
                         <tr>
                             <th>Address</th>
-                            <td>{{place.address}} <br> {{place.city_name + ", " + place.state_code + ", " + place.country_name}}</td>
+                            <td>{{place.address}} <br> {{place.city + ", " + place.state + ", " + place.country}}</td>
                         </tr>
 
                         <tr>
                             <th>URL</th>
-                            <td>{{place.url}}</td>
+                            <td><a href="{{place.url}}" target="_blank">{{place.url}}</a></td>
                         </tr>
 
                         <tr>
@@ -43,12 +43,13 @@
 
                         <tr>
                             <th>Price Rating</th>
-                            <td>{{Array(place.price.length).join("$")}}</td>
+
+                            <td><span ng-repeat=" x in arrayRepeat(place.price)">$</span></td>
                         </tr>
 
                         <tr>
-                            <th># Checkins<span style="font-weight: normal;">(# Users)</span></th>
-                            <td>{{place.checkins_count + " (" + place.users_count + ")"}}</td>
+                            <th># Checkins<span style="font-weight: normal;">(unique)</span></th>
+                            <td>{{place.checkins + " (" + place.users + ")"}}</td>
                         </tr>
 
                         <tr>

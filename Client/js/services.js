@@ -129,7 +129,14 @@ angular.module('app')
                 rating: place.rating,
                 _placeType: place._placeType,
                 categoriesArray: place.categoriesArray,
-                reviews: place.reviews
+                reviews: place.reviews,
+                phone: place.phone,
+                price: place.price,
+                checkins: place.checkins_count,
+                users: place.users_count,
+                likes: place.likes,
+                url: place.url
+
             }
         }
 
@@ -289,7 +296,8 @@ angular.module('app')
         }
 
         function refreshStatsFromFourSquare(placeId) {
-            return server.placeDetails(placeId);
+            return server.placeDetails(placeId)
+                .then(_transformPlace)
         }
 
         function getCityRecommendation(categoryId, price) {
@@ -297,10 +305,10 @@ angular.module('app')
                 categoryId: categoryId,
                 price: price
             })
-                .then(function (details) {
+                .then(function (city) {
                     return {
-                        city: details.city_name,
-                        score: details.avg_score
+                        name: city.city_name,
+                        score: city.avg_score
                     }
                 })
                 .catch(_logAndThrow)
@@ -378,7 +386,15 @@ angular.module('app')
 
         var getters = {
             cities: server.getCities().catch(error),
-            categories: server.getCategories().catch(error),
+            categories: server.getCategories().catch(error)
+                .then(function(cats){
+                    return cats.map(function(cat){
+                        return {
+                            name: cat.category_name,
+                            id: cat.category_id
+                        }
+                    })
+                }),
         };
         lodash.forEach(getters, function (getter, getterName) {
             getter.then(function (response) {
