@@ -63,6 +63,13 @@ angular.module('app')
         };
 
         server.placeDetails = function (placeId) {
+            return $http.get(url + 'get_location_page_details.php', {
+                params: {
+                    place_id: placeId
+                }
+            }).then(extractData)
+        };
+        server.placeDetailsRefresh = function (placeId) {
             return $http.get(url + 'update_place_stats.php', {
                 params: {
                     place_id: placeId
@@ -77,12 +84,12 @@ angular.module('app')
         };
 
         server.addReview = function (id, review) {
-            var body = angular.extend({},review,{place_id : id});
+            var body = angular.extend({}, review, {place_id: id});
             return $http.post(url + 'add_review.php', body)
         };
 
         server.addLike = function (reviewId) {
-            return $http.get(url + 'add_review_like.php',{
+            return $http.get(url + 'add_review_like.php', {
                 params: {
                     review_id: reviewId
                 }
@@ -111,9 +118,9 @@ angular.module('app')
                     return {
                         id: review.review_id,
                         likes: review.likes,
-                        firstName : review.first_name || undefined,
+                        firstName: review.first_name || undefined,
                         lastName: review.last_name || undefined,
-                        createdAt : new Date(review.createdAt),
+                        createdAt: new Date(review.createdAt),
                         text: review.content
                     }
                 })
@@ -267,36 +274,18 @@ angular.module('app')
             };
             return server.replace(angular.extend(_transformDayParams(params), {
                 meal: typeEnum[replaceType]
-            })).then(function (replacements) {
-                replacements.forEach(function (place) {
-                    place._placeType = replaceType;
-                });
-                return replacements
-            })
-
-            /* //TODO
-             //mock
-             var mock = {
-             name: 'replacement',
-             category_name: 'Category Name',
-             url: 'http://google.com',
-             phone: '(054) 7564553',
-             address: 'TAU',
-             image: 'https://bower.io/img/bower-logo.png'
-             };
-             mock = [1, 2, 3, 4, 5].map(function () {
-             return mock;
-             });
-             var data = mock;
-             //real code
-             data.forEach(function (place) {
-             place._placeType = replaceType;
-             });
-             return $q.resolve(data)*/
+            }))
+                .then(_transformPlaces)
+                .then(function (replacements) {
+                    replacements.forEach(function (place) {
+                        place._placeType = replaceType;
+                    });
+                    return replacements
+                })
         }
 
         function refreshStatsFromFourSquare(placeId) {
-            return server.placeDetails(placeId)
+            return server.placeDetailsRefresh(placeId)
                 .then(_transformPlace)
         }
 
@@ -386,8 +375,8 @@ angular.module('app')
 
         var getters = {
             cities: server.getCities().catch(error)
-                .then(function(cities){
-                    return cities.map(function(city){
+                .then(function (cities) {
+                    return cities.map(function (city) {
                         return {
                             name: city.city_name,
                             id: city.city_id
@@ -395,8 +384,8 @@ angular.module('app')
                     })
                 }),
             categories: server.getCategories().catch(error)
-                .then(function(cats){
-                    return cats.map(function(cat){
+                .then(function (cats) {
+                    return cats.map(function (cat) {
                         return {
                             name: cat.category_name,
                             id: cat.category_id

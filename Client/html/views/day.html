@@ -10,7 +10,7 @@
             <h1 class="md-toolbar-tools">Plan a culinary day!</h1>
         </md-toolbar>
         <md-content>
-            <md-list>
+            <md-list style="min-height: 270px">
                 <md-list-item ng-click="openLocationDialog($event)">
                     <p>Set Your Location</p>
                     <md-icon class="md-secondary">open_in_new</md-icon>
@@ -84,5 +84,8 @@
             </md-card>
         </md-content>
 
+    </div>
+    <div flex="" ng-show="fetching" layout="column"  layout-align="center center" style="min-height:200px;">
+        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
     </div>
 </div>

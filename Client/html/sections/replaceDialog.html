@@ -17,11 +17,11 @@
                     class="md-3-line"
                     ng-repeat="place in replacements track by $index"
                     ng-click="choose(place)">
-                <img ng-src="{{::place.image}}" class="md-avatar" alt=""/>
+                <img ng-src="{{place.image}}" class="md-avatar" alt=""/>
                 <div class="md-list-item-text" layout="column">
-                    <h3>{{ ::place.name }}</h3>
-                    <h4>{{ ::place.category_name }}</h4>
-                    <p>{{  ::place.url || place.phone || place.address }}</p>
+                    <h3>{{ place.name }}</h3>
+                    <h4>{{ place.categoriesArray.join(', ') }}</h4>
+                    <p>{{place.address}},{{place.city + ", " + (place.state ? place.state + ", ": "") + place.country}}</p>
                 </div>
             </md-list-item>
         </md-list>

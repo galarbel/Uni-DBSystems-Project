@@ -1,7 +1,7 @@
 <md-content  layout="column" ng-controller="placesSearchCtrl" ng-init="resetSearch()">
     <!--<md-content flex="nogrow" style="width: 1024px;border : 1px solid red" layout="column" ng-controller="placesSearchCtrl">-->
 
-    <div layout="column" layout-margin ng-hide="showResults">
+    <div layout="column" layout-margin ng-hide="showResults || fetching">
         <h3 class="md-display-1">
             Choose a search method to find the place to eat at:
         </h3>
@@ -84,7 +84,9 @@
             </div>
         </div>
     </div>
-
+    <div flex="" ng-show="fetching" layout="column"  layout-align="center center" style="min-height:200px;">
+        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+    </div>
 
     <md-toolbar ng-show="showResults">
         <div class="md-toolbar-tools">

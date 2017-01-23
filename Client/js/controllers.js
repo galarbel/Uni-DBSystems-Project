@@ -21,7 +21,7 @@ angular.module('app')
     .controller('dayCtrl', function ($scope, $mdDialog, state, lodash, placesConnection) {
         $scope.state = state;
         $scope.$watch('state.ll', function (v) {
-            $scope.userLocation = angular.extend({},v);
+            $scope.userLocation = angular.extend({}, v);
             console.log(v)
         }, true);
 
@@ -44,10 +44,13 @@ angular.module('app')
                 });
         };
         $scope.openReplaceDialog = function (ev, replaceType) {
+            $scope.fetching = true;
             placesConnection.getReplacement($scope.params, replaceType)
                 .then(function (replacements) {
-                    if(!replacements || ! replacements.length){
+                    $scope.fetching = false;
+                    if (!replacements || !replacements.length) {
                         //TODO NO PLACES FOUND
+                        return
                     }
                     return $mdDialog.show({
                         controller: 'replaceDialogCtrl',
@@ -56,7 +59,7 @@ angular.module('app')
                         locals: {
                             replacements: replacements
                         }
-                    })
+                    });
                 })
                 .then(function (replacement) {
                     var indexOfPlace = $scope.day.reduce(function (i, place, currentIndex) {
@@ -78,9 +81,11 @@ angular.module('app')
 
         $scope.findDay = function () {
             $scope.day = [];
-            angular.extend($scope.params,$scope.userLocation);
+            $scope.fetching = true;
+            angular.extend($scope.params, $scope.userLocation);
             placesConnection.getDay($scope.params)
                 .then(function (day) {
+                    $scope.fetching=false;
                     $scope.day = day;
                 })
         };
@@ -127,19 +132,23 @@ angular.module('app')
         staticServerData.categories.then(function (categories) {
             $scope.categories = categories;
         });
-        $scope.matchCity = function(query){
+        $scope.matchCity = function (query) {
             return $q.resolve($scope.cities)
-                .then(function(cities){
+                .then(function (cities) {
                     return cities.filter(function (city) {
                         return city.name.toLowerCase().indexOf(query.toLowerCase()) > -1;
+                    })
                 })
-            })
         }
         $scope.resetSearch = function () {
+            $scope.fetching = false;
             $scope.currentPage = 0;
             $scope.searchText = '';
             $scope.showResults = false;
-            $scope.params = {};
+            $scope.params = {
+                price: 3,
+                minRating: 6.0
+            };
             $scope.selectedCity = null;
             $scope.citySearchText = '';
             if ($scope.filtersForm) {
@@ -160,6 +169,7 @@ angular.module('app')
 
             //mock creation
             $scope.places = [];
+            $scope.fetching = true;
             placesConnection.textSearch($scope.searchText, pageSize, pageNumber * pageSize)
                 .then(resultsHandler).then(function () {
                 $scope.resultsQuery = searchedText;
@@ -169,13 +179,15 @@ angular.module('app')
             if ($scope.filtersForm.$invalid) {
                 return; //todo report to user that there must be search text
             }
+            $scope.fetching = true;
             placesConnection.filterSearch($scope.params, pageSize, pageNumber * pageSize)
-                .then(resultsHandler)
+                .then(resultsHandler);
         };
 
         function resultsHandler(places) {
             $scope.places = places;
             $scope.showResults = true;
+            $scope.fetching = false;
             return places;
         }
 
@@ -189,8 +201,10 @@ angular.module('app')
         $scope.newReview = angular.extend({}, newReview);
 
         $scope.init = function () {
+            $scope.fetching = true;
             return placesConnection.getById(state.currentPlaceId)
                 .then(function (place) {
+                    $scope.fetching = false;
                     $scope.imgStyle = imgStyle(place);
                     return $scope.place = place;
                 })
@@ -215,11 +229,11 @@ angular.module('app')
             placesConnection.addReview($scope.place.id, sentReview)
                 .then(function () {
                     sentReview.likes = 0;
-                    sentReview.createdAt  = new Date();
+                    sentReview.createdAt = new Date();
                     $scope.place.reviews.unshift(sentReview);
                     $scope.newReview = angular.extend({}, newReview)
                 })
-                .catch(function(err){
+                .catch(function (err) {
                     console.error(err);
                 })
                 .finally(function () {
@@ -227,9 +241,9 @@ angular.module('app')
                 })
 
         };
-        $scope.arrayRepeat = function(n){
+        $scope.arrayRepeat = function (n) {
             var r = [];
-            for(var i = 0; i< n ;i++){
+            for (var i = 0; i < n; i++) {
                 r.push(i);
             }
             return r;
@@ -248,8 +262,10 @@ angular.module('app')
         };
 
         $scope.refreshStatsFromFourSquare = function (placeId) {
+            $scope.fetching = true;
             placesConnection.refreshStatsFromFourSquare(placeId)
                 .then(function (newData) {
+                    $scope.fetching = false;
                     angular.extend($scope.place, newData);
                 })
                 .catch(function (error) {
@@ -260,8 +276,8 @@ angular.module('app')
 
 
     })
-    .controller('travelCtrl', function ($scope,placesConnection,staticServerData) {
-        staticServerData.categories.then(function(categories){
+    .controller('travelCtrl', function ($scope, placesConnection, staticServerData) {
+        staticServerData.categories.then(function (categories) {
             $scope.categories = categories;
         });
 
@@ -272,12 +288,12 @@ angular.module('app')
         };
 
         $scope.getCity = function () {
-            if(!$scope.categoryId){
+            if (!$scope.categoryId) {
                 return;
             }
-            placesConnection.getCityRecommendation($scope.categoryId,$scope.price)
-                .then(function(city){
-                    $scope.city=city;
+            placesConnection.getCityRecommendation($scope.categoryId, $scope.price)
+                .then(function (city) {
+                    $scope.city = city;
                 })
         }
     });
