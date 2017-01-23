@@ -15,7 +15,7 @@
                     <div ng-show="searchText" ng-click="searchText=''" flex="noshrink" layout
                          layout-align="center center"
                          style="background: white; cursor: pointer">
-                        <md-icon flex>close</md-icon>   q
+                        <md-icon flex>close</md-icon>
                     </div>
                 </div>
                 <md-button class="md-primary md-raised" ng-disabled="!searchText" ng-click="textSearch(0)">
@@ -71,7 +71,7 @@
 
     <md-toolbar ng-show="showResults">
         <div class="md-toolbar-tools">
-            <h2>Results <span ng-show="resultsQuery">for "{{resultsQuery}}"</span></h2>
+            <h2>{{places.length}} results <span ng-show="resultsQuery">for "{{resultsQuery}}"</span></h2>
             <span flex></span>
             <md-button ng-click="resetSearch()">Search Again</md-button>
         </div>

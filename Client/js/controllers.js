@@ -46,6 +46,9 @@ angular.module('app')
         $scope.openReplaceDialog = function (ev, replaceType) {
             placesConnection.getReplacement($scope.params, replaceType)
                 .then(function (replacements) {
+                    if(!replacements || ! replacements.length){
+                        //TODO NO PLACES FOUND
+                    }
                     return $mdDialog.show({
                         controller: 'replaceDialogCtrl',
                         templateUrl: 'html/sections/replaceDialog.html',
@@ -198,20 +201,25 @@ angular.module('app')
         $scope.addReview = function () {
             $scope.sendingReview = true;
             var sentReview = angular.extend({}, $scope.newReview);
-            placesConnection.addReview($scope.place.place_id, sentReview)
+            placesConnection.addReview($scope.place.id, sentReview)
                 .then(function () {
-                    $scope.places.reviews.unshift(sentReview);
+                    sentReview.likes = 0;
+                    $scope.place.reviews.unshift(sentReview);
                     $scope.newReview = angular.extend({}, newReview)
+                })
+                .catch(function(err){
+                    console.error(err);
                 })
                 .finally(function () {
                     $scope.sendingReview = false;
                 })
+
         };
 
         $scope.addLike = function (review) {
             review._likeAdded = true;
             review.likes++;
-            placesConnection.addLikeToReview(review.review_id)
+            placesConnection.addLikeToReview(review.id)
                 .then(function () {
                     //well done, nothing to do here
                 })

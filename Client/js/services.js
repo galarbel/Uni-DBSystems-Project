@@ -77,15 +77,12 @@ angular.module('app')
         };
 
         server.addReview = function (id, review) {
-            return $http.post(url + 'add_review.php', review, {
-                params: {
-                    place_id: id
-                }
-            })
+            var body = angular.extend({},review,{place_id : id});
+            return $http.post(url + 'add_review.php', body)
         };
 
         server.addLike = function (reviewId) {
-            return $http.put(url + 'add_review_like.php', null, {
+            return $http.get(url + 'add_review_like.php',{
                 params: {
                     review_id: reviewId
                 }
@@ -111,8 +108,14 @@ angular.module('app')
         function _transformPlace(place) {
             if (place.reviews) {
                 place.reviews = place.reviews.map(function (review) {
-                    throw new Error("IMPLEMENT!!!");
-                    return {}
+                    return {
+                        id: review.review_id,
+                        likes: review.likes,
+                        firstName : review.first_name || undefined,
+                        lastName: review.last_name || undefined,
+                        createdAt : new Date(review.createdAt),
+                        text: review.content
+                    }
                 })
             }
             return {
@@ -120,10 +123,13 @@ angular.module('app')
                 name: place.place_name,
                 city: place.city_name,
                 state: place.state_code,
-                image: place.photo_url,
+                image: place.photo_url || place.photo,
                 country: place.country_name,
                 address: place.address,
-                rating: place.rating
+                rating: place.rating,
+                _placeType: place._placeType,
+                categoriesArray: place.categoriesArray,
+                reviews: place.reviews
             }
         }
 
@@ -195,6 +201,7 @@ angular.module('app')
                         return place;
                     });
                 })
+                .then(_transformPlaces)
                 .catch(_logAndThrow);
 
             /* //TODO

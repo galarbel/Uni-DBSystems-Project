@@ -4,7 +4,7 @@
             style="min-height: 235px;"
             class="md-sidenav-left"
             md-component-id="left"
-            md-is-locked-open="$mdMedia('gt-sm')"
+            md-is-locked-open="true"
             md-whiteframe="4">
         <md-toolbar>
             <h1 class="md-toolbar-tools">Plan a culinary day!</h1>
@@ -75,7 +75,7 @@
                     </md-card-title-text>
                 </md-card-title>
                 <md-card-content>
-                    <p>{{place.category_name}}</p>
+                    <p>Categories: {{place.categoriesArray.join(", ")}}</p>
                 </md-card-content>
                 <md-card-actions layout="row" layout-align="end center">
                     <md-button class="md-raised md-primary" ng-click="gotoPlace(place.id)">details</md-button>
