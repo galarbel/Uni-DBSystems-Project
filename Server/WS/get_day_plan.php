@@ -4,66 +4,22 @@ include_once '../Global/config.php';
 
 $sqlQuery = "call web_get_culinary_day (?, ?, ?, ?, ?, ?)";
 
-$max_price = 4;
-$night_person = 1;
-$max_distance = 0.1;
-$force_morning = 1;
+$default_max_price = 4;
+$default_night_person = 1;
+$default_max_distance = 0.1;
+$default_force_morning = 1;
 
-if (!isset($_REQUEST["latitude"]) || !is_numeric($_REQUEST["latitude"])) {
-    badRequest("missing 'latitude' parameter or not numeric");
-}
-
-if (!isset($_REQUEST["longitude"]) || !is_numeric($_REQUEST["longitude"])) {
-    badRequest("missing 'longitude' parameter or not numeric");
-}
-
-if (isset($_REQUEST["price"])) {
-    if (!is_numeric($_REQUEST["price"])) {
-        badRequest("'price' parameter is not numeric");
-    } else {
-        $max_price = $_REQUEST["price"];
-    }
-}
-
-if (isset($_REQUEST["night_person"])) {
-    if (!is_numeric($_REQUEST["night_person"])) {
-        badRequest("'night_person' parameter is not numeric");
-    } else {
-        $night_person = $_REQUEST["night_person"];
-    }
-}
-
-if (isset($_REQUEST["force_morning"])) {
-    if (!is_numeric($_REQUEST["force_morning"])) {
-        badRequest("'force_morning' parameter is not numeric");
-    } else {
-        $force_morning = $_REQUEST["force_morning"];
-    }
-}
-
-if (isset($_REQUEST["distance"])) {
-    if (!is_numeric($_REQUEST["distance"])) {
-        badRequest("'distance' parameter is not numeric");
-    } else {
-        $max_distance = $_REQUEST["distance"];
-    }
-}
-
-
-/* OK - print JSON */
-
-header('Content-type: application/json');
+$max_price = $getNumericParamOrDefault($_REQUEST, "price", false, $default_max_price);
+$night_person = $getNumericParamOrDefault($_REQUEST, "night_person", false, $default_night_person);
+$max_distance = $getNumericParamOrDefault($_REQUEST, "distance", false, $default_max_distance);
+$force_morning = $getNumericParamOrDefault($_REQUEST, "force_morning", false, $default_force_morning);
+$lati = $getNumericParamOrDefault($_REQUEST, "latitude", true, null);
+$longi = $getNumericParamOrDefault($_REQUEST, "longitude", true, null);
 
 $return = [];
 
-$lati = $_REQUEST["latitude"];
-$longi = $_REQUEST["longitude"];
-
-
 $requestsParams = [$lati, $longi, $max_price,$night_person,$max_distance,$force_morning];
 $results = $db->rawQuery($sqlQuery, $requestsParams);
-
-//echo json_encode($results); die;
 
 foreach ($results as $p) {
     parsePlaceCategories($p);
@@ -84,6 +40,7 @@ foreach ($results as $p) {
     }
 }
 
+header('Content-type: application/json');
 echo json_encode($return);
 
 ?>
