@@ -4,17 +4,15 @@ include_once '../Global/config.php';
 
 $post_body = json_decode(file_get_contents('php://input'), true);
 
-if (!isset($_REQUEST["place_id"])) {
-    http_response_code(400);
-    echo 'missing \'place_id\' parameter'; die;
+if (!isset($_REQUEST["place_id"]) || !is_numeric($_REQUEST["place_id"])) {
+    badRequest("missing 'place_id' parameter or not numeric");
 }
 if (!isset($post_body["review_text"])) {
-    http_response_code(400);
-    echo 'missing \'review_text\''; die;
+    badRequest("missing 'review_text'");
 }
+
 if (!isset($post_body["first_name"])) {
-    http_response_code(400);
-    echo 'missing \'first_name\''; die;
+    badRequest("missing 'first_name'");
 }
 
 header('Content-type: application/json');
@@ -28,6 +26,5 @@ $last_name = isset($post_body["last_name"]) ? $post_body["last_name"] : null; //
 $sqlQuery = "call web_insert_review (?, ?, ?, ?)";
 $results = $db->rawQuery($sqlQuery, [$place_id, $first_name, $last_name, $review_text]);
 
-// TODO- error handling
 ?>
 

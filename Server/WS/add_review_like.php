@@ -2,9 +2,8 @@
 
 include_once '../Global/config.php';
 
-if (!isset($_REQUEST["review_id"])) {
-    http_response_code(400);
-    echo 'missing "review_id" parameter'; die;
+if (!isset($_REQUEST["review_id"]) || !is_numeric($_REQUEST["review_id"])) {
+    badRequest("missing 'review_id' parameter or not numeric");
 }
 $review_id = $_REQUEST["review_id"];
 
