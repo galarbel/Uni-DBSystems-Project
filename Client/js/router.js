@@ -20,11 +20,11 @@ angular.module('app')
             .state('app.dayTrip', {
                 url: '/day-trip',
                 controller: 'tripCtrl',
-                templateUrl: '/html/views/trip-planner.html'
+                templateUrl: 'html/views/trip-planner.html'
             })
             .state('app.find', {
                 url: '/find',
-                templateUrl: '/html/views/find.html'
+                templateUrl: 'html/views/find.html'
             })
 
     })
