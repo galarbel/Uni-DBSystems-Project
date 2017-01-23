@@ -7,29 +7,43 @@ Team: Nitzan, Dror, Ariel, Gal
 2. using Stored Procedures
 3. using https://github.com/joshcam/PHP-MySQLi-Database-Class for PHP-SQL -- BUT only using it's "rawQuery" method
 
+## **Project Checklist** ##
+1. Finish DB Populate
+2. Finish Server
+3. Finish Client
+4. Review Project Requirements
+5. Prepare Presentation/Explanation/Document/Whatever according to requirements
+6. Test everything on Nova Server
 
 ## **DB Populate** ##
 
 #### Process For Populating DB ####
 
 1. Run PHP insert_toTempTable.php with LL params ( latitude start & finish, and longitude start & finish)
-2. Run SQL SP - dbPopulate_ins_data_from_temp_table (it runs the following SPs: dbPopulate_ins_categories, dbPopulate_ins_cities, dbPopulate_ins_states, dbPopulate_ins_places)
+2. Run SQL SP - dbPopulate_ins_data_from_temp_table
 3. Run PHP insert_places_info.php - it will add additional info needed per place
 
 
 #### TODO ####
 1. finish running on all USA (started at 31, currently at 41 out of 48)
-1. finish dbPopulate_ins_categories --done, but needs a 2nd opnion (review)
-2. finish dbPopulate_ins_cities --done, but needs a 2nd opnion (review)
-3. create dbPopulate_ins_states --removing?
-4. create dbPopulate_ins_places
-5. create dbPopulate_ins_data_from_temp_table 
-6. make php - insert_places_info.php  (this should include hours, rating, price, REVIEWS! + any other relevant info)
 7. run insert_places_info.php for all the places
 
-## **DB Queries** ##
-... to do :)
+## **Server** ##
+
+#### TODO ####
+
+1. Start thinking about what Queries
+2. develop Queries (probably as stored procedures)
+3. develop PHP files to connect DB & Client calls
 
 
 ## **Client** ##
-...to do :)
+
+1. places search
+2. places list
+3. place page
+4. add review
+5. day search result
+6. replacements options menu
+7. show replacement details
+8. replace mocks with requests
