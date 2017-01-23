@@ -5,12 +5,15 @@ include_once '../Global/config.php';
 $post_body = json_decode(file_get_contents('php://input'), true);
 
 if (!isset($_REQUEST["place_id"])) {
+    http_response_code(400);
     echo 'missing \'place_id\' parameter'; die;
 }
 if (!isset($post_body["review_text"])) {
+    http_response_code(400);
     echo 'missing \'review_text\''; die;
 }
 if (!isset($post_body["first_name"])) {
+    http_response_code(400);
     echo 'missing \'first_name\''; die;
 }
 
