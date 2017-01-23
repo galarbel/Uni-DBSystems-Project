@@ -10,7 +10,7 @@
     <md-content flex layout="row" layout-padding ng-switch-when="places">
         <ng-include flex layout="row" src="'html/views/places.html'"></ng-include>
     </md-content>
-    <md-content flex layout="row" layout-padding ng-switch-when="travel">
-        <ng-include flex layout="row" src="'html/views/travel.html'"></ng-include>
-    </md-content>
+    <div flex layout="row" layout-padding ng-switch-when="travel">
+        <ng-include flex="noshrink" layout="row" src="'html/views/travel.html'"></ng-include>
+    </div>
 </div>

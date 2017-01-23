@@ -127,15 +127,26 @@ angular.module('app')
         staticServerData.categories.then(function (categories) {
             $scope.categories = categories;
         });
-
+        $scope.matchCity = function(query){
+            return $q.resolve($scope.cities)
+                .then(function(cities){
+                    return cities.filter(function (city) {
+                        return city.name.toLowerCase().indexOf(query.toLowerCase()) > -1;
+                })
+            })
+        }
         $scope.resetSearch = function () {
             $scope.currentPage = 0;
             $scope.searchText = '';
             $scope.showResults = false;
             $scope.params = {};
+            $scope.selectedCity = null;
+            $scope.citySearchText = '';
             if ($scope.filtersForm) {
                 $scope.filtersForm.$setPristine();
+                $scope.filtersForm.$setUntouched();
             }
+
         };
 
         $scope.textSearch = function (pageNumber) {
@@ -253,6 +264,7 @@ angular.module('app')
         staticServerData.categories.then(function(categories){
             $scope.categories = categories;
         });
+
         $scope.init = function () {
             $scope.categoryId = null;
             $scope.price = 2;

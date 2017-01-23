@@ -2,7 +2,7 @@
 
 include_once '../Global/config.php';
 
-$sqlQuery = "call web_get_buzz_city_by_category (?, ?)";
+$sqlQuery = "call web_get_buzz_city (?, ?)";
 
 $category_id = null;
 $max_price = null;

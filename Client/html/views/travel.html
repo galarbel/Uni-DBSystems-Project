@@ -1,45 +1,49 @@
-<md-content layout="column" ng-controller="travelCtrl" ng-init="init()" flex style="max-width: 1024px">
+<div layout="column" ng-controller="travelCtrl" ng-init="init()" flex style="max-width: 1024px">
     <md-toolbar layout="row">
         <div class="md-toolbar-tools">
             <h3>Find your best place to travel to</h3>
             <span flex></span>
             <md-button class="md-raised" ng-click="init()">
-                refresh
+                reset
             </md-button>
         </div>
     </md-toolbar>
-    <md-card>
-        <md-card-title>
-            <md-card-title-text>
-                <span class="md-headline">Tell us about you</span>
-                <span class="md-subhead">We will try to find you a nice place to visit</span>
-            </md-card-title-text>
-        </md-card-title>
-        <md-card-content>
-            <div layout="row" layout-align="space-between center">
-                <span>What is for favourite food type?</span>
-                <md-select ng-model="categoryId" placeholder="Category" class="md-no-underline" required>
-                    <md-option ng-repeat="cat in categories" ng-value="cat.id">{{cat.name}}</md-option>
-                </md-select>
-            </div>
-            <div layout="row" layout-align="space-between center">
-                <span>What is your budget?</span>
-                <md-slider flex md-discrete ng-model="price" min="1" max="4"></md-slider>
-            </div>
-            <div layout="row">
-                <p flex=""></p>
-                <md-button class="md-raised md-primary" ng-click="getCity()">Search</md-button>
-            </div>
-        </md-card-content>
-    </md-card>
-    <md-card ng-show="city">
-        <md-card-title>
-            <md-card-title-text>
-                <span class="md-headline">Have fun in</span>
-            </md-card-title-text>
-        </md-card-title>
-        <md-card-content>
-            <strong style="font-size: 90px">{{city.name}}!</strong>
-        </md-card-content>
-    </md-card>
-</md-content>
+    <div>
+        <md-card>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">Tell us about you</span>
+                    <span class="md-subhead">We will try to find you a nice place to visit</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <div layout="row" layout-align="space-between center">
+                    <span>What is for favourite food type?</span>
+                    <md-select ng-model="categoryId" placeholder="Category" class="md-no-underline" required>
+                        <md-option ng-repeat="cat in categories" ng-value="cat.id">{{cat.name}}</md-option>
+                    </md-select>
+                </div>
+                <div layout="row" layout-align="space-between center">
+                    <span>What is your budget?</span>
+                    <md-slider flex md-discrete ng-model="price" min="1" max="4"></md-slider>
+                </div>
+                <div layout="row">
+                    <p flex=""></p>
+                    <md-button class="md-raised md-primary" ng-click="getCity()">Search</md-button>
+                </div>
+            </md-card-content>
+        </md-card>
+    </div>
+    <div>
+        <md-card ng-show="city">
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">Have fun in</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <strong style="font-size: 90px">{{city.name}}!</strong>
+            </md-card-content>
+        </md-card>
+    </div>
+</div>

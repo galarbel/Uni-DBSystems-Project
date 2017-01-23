@@ -135,8 +135,8 @@ angular.module('app')
                 checkins: place.checkins_count,
                 users: place.users_count,
                 likes: place.likes,
-                url: place.url
-
+                url: place.url,
+                lastUpdated: place.stats_last_update
             }
         }
 
@@ -385,7 +385,15 @@ angular.module('app')
          }*/
 
         var getters = {
-            cities: server.getCities().catch(error),
+            cities: server.getCities().catch(error)
+                .then(function(cities){
+                    return cities.map(function(city){
+                        return {
+                            name: city.city_name,
+                            id: city.city_id
+                        }
+                    })
+                }),
             categories: server.getCategories().catch(error)
                 .then(function(cats){
                     return cats.map(function(cat){

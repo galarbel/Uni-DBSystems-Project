@@ -40,15 +40,32 @@
                                        ng-model="params.minRating"></md-slider>
                         </md-slider-container>
                     </div>
-                    <div layout="row">
-                        <md-select ng-model="params.city" placeholder="City" flex="33" required>
-                            <md-option ng-repeat="city in cities" ng-value="city.id">{{city.name}}</md-option>
-                        </md-select>
-                        <md-select ng-model="params.category" placeholder="Category" flex="33" required>
+                    <div layout="row" layout-margin>
+                        <md-autocomplete
+                                required
+                                flex="100"
+                                md-selected-item="selectedCity"
+                                md-search-text="citySearchText"
+                                md-selected-item-change="params.city = selectedCity.id"
+                                md-items="city in matchCity(citySearchText)"
+                                md-item-text="city.name"
+                                md-min-length="2"
+                                placeholder="City">
+                            <md-item-template>
+                                <span >{{city.name}}</span>
+                            </md-item-template>
+                            <md-not-found>
+                                No cities matching were found.
+                            </md-not-found>
+                        </md-autocomplete>
+                        <!--<md-select ng-model="params.city" placeholder="City" flex="100" required>-->
+                            <!--<md-option ng-repeat="city in cities" ng-value="city.id">{{city.name}}</md-option>-->
+                        <!--</md-select>-->
+                        <md-select ng-model="params.category" placeholder="Category" flex="50" required>
                             <md-option ng-repeat="category in categories" ng-value="category.id">{{category.name}}
                             </md-option>
                         </md-select>
-                        <md-select ng-model="params.type" placeholder="Ideal For" flex="33" required>
+                        <md-select ng-model="params.type" placeholder="Ideal For" flex="50" required>
                             <md-option ng-value="1">Morning</md-option>
                             <md-option ng-value="2">Lunch</md-option>
                             <md-option ng-value="3">Dinner</md-option>
