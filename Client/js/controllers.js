@@ -8,6 +8,7 @@ angular.module('app')
         })
         $scope.goto = function (page) {
             state.currentPage = page;
+            state.placeCurrentPage = 'search';
         }
         $scope.gotoPlace = function gotoPlace(placeId) {
             // if(!placeId) throw new Error('Missing place id in gotoPlace');
@@ -19,7 +20,7 @@ angular.module('app')
     .controller('dayCtrl', function ($scope, $mdDialog, state, lodash, placesConnection) {
         $scope.state = state;
         $scope.$watch('state.ll', function (v) {
-            $scope.userLocation = v;
+            $scope.userLocation = angular.extend({},v);
             console.log(v)
         }, true);
 
@@ -73,6 +74,7 @@ angular.module('app')
 
         $scope.findDay = function () {
             $scope.day = [];
+            angular.extend($scope.params,$scope.userLocation);
             placesConnection.getDay($scope.params)
                 .then(function (day) {
                     $scope.day = day;
@@ -81,7 +83,7 @@ angular.module('app')
 
         $scope.params = {
             price: 1,
-            distance: 100,
+            distance: 1000,
             night: false,
             nightAndBreakfast: false
         }
@@ -112,7 +114,7 @@ angular.module('app')
     .controller('placesCtrl', function ($scope, state) {
 
     })
-    .controller('placesSearchCtrl', function ($scope, state, $q, searchPlaces, staticServerData) {
+    .controller('placesSearchCtrl', function ($scope, state, $q, placesConnection, staticServerData) {
         var pageSize = 20;
 
         staticServerData.cities.then(function (cities) {
@@ -127,7 +129,9 @@ angular.module('app')
             $scope.searchText = '';
             $scope.showResults = false;
             $scope.params = {};
-            $scope.filtersForm.$setPristine();
+            if ($scope.filtersForm) {
+                $scope.filtersForm.$setPristine();
+            }
         };
 
         $scope.textSearch = function (pageNumber) {
@@ -141,20 +145,20 @@ angular.module('app')
 
             //mock creation
             $scope.places = [];
-            searchPlaces.textSearch($scope.searchText, pageSize, pageNumber * pageSize)
+            placesConnection.textSearch($scope.searchText, pageSize, pageNumber * pageSize)
                 .then(resultsHandler).then(function () {
-                    $scope.resultsQuery = searchedText;
-                })
+                $scope.resultsQuery = searchedText;
+            })
         };
         $scope.filterSearch = function (pageNumber) {
-            if($scope.filtersForm.$invalid){
+            if ($scope.filtersForm.$invalid) {
                 return; //todo report to user that there must be search text
             }
-            searchPlaces.filterSearch($scope.params,pageSize,pageNumber * pageSize)
+            placesConnection.filterSearch($scope.params, pageSize, pageNumber * pageSize)
                 .then(resultsHandler)
         };
 
-        function resultsHandler(places){
+        function resultsHandler(places) {
             $scope.places = places;
             $scope.showResults = true;
             return places;
@@ -162,6 +166,13 @@ angular.module('app')
 
     })
     .controller('placeDetailsCtrl', function ($scope, state, placesConnection) {
+        var newReview = {//const
+            firstName: '',
+            lastName: '',
+            text: ''
+        };
+        $scope.newReview = angular.extend({}, newReview);
+
         $scope.init = function () {
             return placesConnection.getById(state.currentPlaceId)
                 .then(function (place) {
@@ -172,6 +183,8 @@ angular.module('app')
                     //TODO
                 })
         };
+
+
         function imgStyle(place) {
             if (!place) {
                 return {};
@@ -181,5 +194,59 @@ angular.module('app')
             }
         }
 
+        $scope.addReview = function () {
+            $scope.sendingReview = true;
+            var sentReview = angular.extend({}, $scope.newReview);
+            placesConnection.addReview($scope.place.place_id, sentReview)
+                .then(function () {
+                    $scope.places.reviews.unshift(sentReview);
+                    $scope.newReview = angular.extend({}, newReview)
+                })
+                .finally(function () {
+                    $scope.sendingReview = false;
+                })
+        };
+
+        $scope.addLike = function (review) {
+            review._likeAdded = true;
+            review.likes++;
+            placesConnection.addLikeToReview($scope.place.place_id, review.review_id)
+                .then(function () {
+                    //well done, nothing to do here
+                })
+                .catch(function (err) {
+                    console.error(err);
+                    review.likes--;
+                })
+        };
+
+        $scope.refreshStatsFromFourSquare = function (placeId) {
+            placesConnection.refreshStatsFromFourSquare(placeId)
+                .then(function (newData) {
+                    angular.extend($scope.place, newData);
+                })
+                .catch(function (error) {
+                    //TODO
+                    console.error(error);
+                })
+        }
+
 
     })
+    .controller('travelCtrl', function ($scope,placesConnection) {
+        $scope.init = function () {
+            $scope.categoryId = null;
+            $scope.price = 1;
+            $scope.city = null;
+        };
+
+        $scope.getCity = function () {
+            if(!$scope.categoryId){
+                return;
+            }
+            placesConnection.getCityRecommendation($scope.categoryId,$scope.price)
+                .then(function(city){
+                    $scope.city=city;
+                })
+        }
+    });

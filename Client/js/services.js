@@ -8,65 +8,52 @@ angular.module('app')
         }
     })
     .factory('server', function ($http, config) {
-        var server = {};
-        var url = server.url = config.server.url + "/";
-
-        server.getCities = function getCities(){
-            return $http.get(url + 'cities');
-        };
-        server.getCategories = function getCategories(){
-            return $http.get(url + 'categories');
-        };
-
-        server.getEnums = function getEnums() {
-            return $http.get(url + "enums");
-        };
-        server.findTrip = function findTrip(params) {
-            return $http.get(url + 'trip', {
-                params: params
-            })
-        };
-
-        return server;
-    })
-    .factory('tripPlanner', function (server) {
-        var planner = {};
-        var trip;
-
-        function resetTrip() {
-            trip = null;
+        function extractData(response) {
+            console.log(response.config.url);
+            console.dir(response);
+            console.dir(response.data);
+            return response.data;
         }
 
-        planner.findTrip = function findTrip(params) {
-            return server.findTrip(params)
-                .then(function (_trip) {
-                    trip = _trip;
-                    return trip;
-                });
+        var server = {};
+        var url = server.url = config.server.url;
+
+        server.getCities = function getCities() {
+            return $http.get(url + 'get_all_cities.php').then(extractData);
         };
-        planner.getCurrentTrip = function getCurrentTrip() {
-            return trip;
+        server.getCategories = function getCategories() {
+            return $http.get(url + 'get_all_categories.php').then(extractData);
         };
-        planner.getModifiedTrip = function getModifiedTrip(params) {
-            // if (trip) {
-            //     params.last_trip_id = trip.id;
-            //     return findTrip(params);
-            // }
-            // else {
-            //     //TODO
-            // }
+
+        server.textSearch = function (searchText) {
+            return $http.get(url + 'search_venue.php', {
+                params: {
+                    text: searchText
+                }
+            }).then(extractData)
+
         };
-        //init
-        resetTrip();
-        return planner;
+
+        server.day = function (params) {
+            return $http.get(url + 'get_day_plan.php', {
+                params: params
+            }).then(extractData)
+        };
+        server.replace = function (params) {
+            return $http.get(url + 'get_day_plan_options.php', {
+                params: params
+            }).then(extractData)
+        }
+
+        return server;
     })
     .factory('state', function () {
         return {
             currentPage: 'day',//or 'places'
             placeCurrentPage: 'search',//or 'place'
             ll: {
-                lon: 0,
-                lat: 0
+                lon: -74,
+                lat: 41
             },
             resultsQuery: '',
             searchResults: null
@@ -92,46 +79,24 @@ angular.module('app')
             get: get
         }
     })
-    .factory('searchPlaces', function ($http, $q, $timeout) {
-        /**
-         * query string is search text
-         */
-        function textSearch(queryString, limit, skip) {
-            //mock
-            var places = [];
-            for (var i = skip; i < skip + limit; i++) {
-                places.push({
-                    id: 'mockId' + i,
-                    name: 'Name' + i,
-                    description: 'Desc'
-                })
+    .factory('placesConnection', function ($http, $q, $timeout, lodash, server) {
+        function _transformPlace(place) {
+            return {
+                id: place.place_id,
+                name: place.place_name,
+                city: place.city_name,
+                state: place.state_code,
+                image: place.photo_url,
+                country: place.country_name,
+                address: place.address,
+                rating: place.rating
             }
-            return $timeout(angular.noop, 350).then(function () {
-                return places;
-            })
         }
 
-        function filterSearch(params,limit,skip){
-            //mock
-            var places = [];
-            for (var i = skip; i < skip + limit; i++) {
-                places.push({
-                    id: 'mockId' + i,
-                    name: 'Name' + i,
-                    description: 'Desc'
-                })
-            }
-            return $timeout(angular.noop, 350).then(function () {
-                return places;
-            })
+        function _transformPlaces(places) {
+            return places.map(_transformPlace);
         }
 
-        return {
-            textSearch: textSearch,
-            filterSearch: filterSearch
-        }
-    })
-    .factory('placesConnection', function ($http, $q, $timeout,lodash) {
         function getById(id) {
             //mock
             return $timeout(angular.noop, 150)
@@ -169,7 +134,28 @@ angular.module('app')
             //TODO make the server refresh likes to this place
         }
 
+        function _transformDayParams(params) {
+            return {
+                latitude: params.lat,
+                longitude: params.lon,
+                price: params.price,
+                night_person: params.night ? 1 : 0,
+                force_morning: params.nightAndBreakfast ? 1 : 0,
+                distance: params.distance
+            }
+        }
+
         function getDay(params) {
+            return server.day(_transformDayParams(params))
+                .then(function (day) {
+                    // var myResponse = lodash.map(rawResponse, function (place, key) {//converts to array with type inside
+                    //     place._placeType = key;
+                    //     return place;
+                    // });
+                    debugger;
+                    return day;
+                })
+
             //TODO
             var rawResponse = {
                 morning: {
@@ -180,7 +166,7 @@ angular.module('app')
                     address: 'TAU',
                     image: 'https://bower.io/img/bower-logo.png'
                 },
-                lunch :{
+                lunch: {
                     name: 'Name',
                     category_name: 'Category Name',
                     url: 'http://google.com',
@@ -205,7 +191,7 @@ angular.module('app')
                     image: 'https://bower.io/img/bower-logo.png'
                 }
             };
-            var myResponse = lodash.map(rawResponse,function(place,key){//converts to array with type inside
+            var myResponse = lodash.map(rawResponse, function (place, key) {//converts to array with type inside
                 place._placeType = key;
                 return place;
             });
@@ -233,10 +219,58 @@ angular.module('app')
             });
             var data = mock;
             //real code
-            data.forEach(function(place){
+            data.forEach(function (place) {
                 place._placeType = replaceType;
             });
             return $q.resolve(data)
+        }
+
+        function refreshStatsFromFourSquare(placeId) {
+            return $q.resolve({});
+        }
+
+        function getCityRecommendation(categoryId, price) {
+            return $q.resolve();
+        }
+
+
+        /**
+         * query string is search text
+         */
+        function textSearch(queryString, limit, skip) {
+            return server.textSearch(queryString)
+                .then(_transformPlaces)
+                .catch(function (err) {
+                    console.error(err);
+                })
+
+            //mock
+            // var places = [];
+            // for (var i = skip; i < skip + limit; i++) {
+            //     places.push({
+            //         id: 'mockId' + i,
+            //         name: 'Name' + i,
+            //         description: 'Desc'
+            //     })
+            // }
+            // return $timeout(angular.noop, 350).then(function () {
+            //     return places;
+            // })
+        }
+
+        function filterSearch(params, limit, skip) {
+            //mock
+            var places = [];
+            for (var i = skip; i < skip + limit; i++) {
+                places.push({
+                    id: 'mockId' + i,
+                    name: 'Name' + i,
+                    description: 'Desc'
+                })
+            }
+            return $timeout(angular.noop, 350).then(function () {
+                return places;
+            })
         }
 
         return {
@@ -244,23 +278,28 @@ angular.module('app')
             addReview: addReview,
             addLikeToReview: addLikeToReview,
             refreshPlaceData: refreshPlaceData,
-            getDay:getDay,
-            getReplacement:getReplacement
+            getDay: getDay,
+            getReplacement: getReplacement,
+            refreshStatsFromFourSquare: refreshStatsFromFourSquare,
+            getCityRecommendation: getCityRecommendation,
+            textSearch: textSearch,
+            filterSearch: filterSearch
         }
     })
-    .factory('staticServerData', function(server){
+    .factory('staticServerData', function (server) {
         /*function error(e){
-            console.error("Error loading resource",e)
-        }*/
-        function error(){
+         console.error("Error loading resource",e)
+         }*/
+        function error() {
             //mock returner
             return [{
-                id : 1,
+                id: 1,
                 name: "Name"
             }];
         }
+
         return {
-            cities : server.getCities().catch(error),
-            categories : server.getCategories().catch(error),
+            cities: server.getCities().catch(error),
+            categories: server.getCategories().catch(error),
         }
     });

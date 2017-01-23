@@ -1,7 +1,7 @@
 <md-content layout="column" ng-controller="placeDetailsCtrl" ng-init="init()">
     <!-- TODO: Change Button to Material + add functionality-->
     <h2>{{place.name}}
-        <md-button class="md-raised md-primary" style="float:right;" ng-click="refreshStatsFromFourSquare($event,place.place_id)">Update From Foursquare</md-button>
+        <md-button class="md-raised md-primary" style="float:right;" ng-click="refreshStatsFromFourSquare(place.place_id)">Update From Foursquare</md-button>
     </h2>
     <div layout="row">
             <div
@@ -10,20 +10,19 @@
                 flex
             ></div>
             <div flex style="margin-left: 10px;">
-                <style>
-                    /* we'll need to move this to outside CSS file or something....*/
-                    .place-info-table th {
-                        text-align:left;
-                        vertical-align: top;
-                        padding-right:5px;
-                    }
+                <!--<style>-->
+                    <!--/* we'll need to move this to outside CSS file or something....*/-->
+                    <!--.place-info-table th {-->
+                        <!--text-align:left;-->
+                        <!--vertical-align: top;-->
+                        <!--padding-right:5px;-->
+                    <!--}-->
 
-                </style>
+                <!--</style>-->
                 <table class="place-info-table">
                     <tbody>
                         <tr>
                             <th>Address</th>
-                            <!-- TODO: we might want to 'parse' the address elsewhere, and simply print {{place.fullAddress}} here or something like that...-->
                             <td>{{place.address}} <br> {{place.city_name + ", " + place.state_code + ", " + place.country_name}}</td>
                         </tr>
 
@@ -62,38 +61,42 @@
             </div>
     </div>
     <h3>Reviews</h3>
-
-    <!-- TODO: repeat this part per review + need to fix the 'ng-click' and probably fix the {{}}... :\  -->
-    <div>
-        <div style="border:1px solid #ccc; padding:20px" flex layout="row">
-            <div flex="10" style="font-size:14px;">
-                <span style="margin-left: 20px;"><b>{{review.likes}}12</b></span>
-                <md-button ng-click="plusReviewLike($event, review.review_id)" style="min-width:inherit;">&#128077;</md-button>
-            </div>
-            <div flex="70" style="padding-top: 15px;">Test 123</div>
-            <div flex="20">
-                <b>{{review.first_name + ' ' + review.last_name}}Gal Arbel</b>
-                <br>
-                {{review.fs_created_timestamp}} 14-May-2014
-            </div>
-        </div>
-    </div>
-    <div>
-        <h4 style="margin-bottom:0px;">Add your own</h4>
+    <div style="margin-bottom: 20px;">
+        <h4 style="margin:0px;">Add your own</h4>
         <div layout="row">
             <div flex=20 layout="column">
                 <div>
-                    <div>First Name:</div><input type="text" />
-                    <div>Last Name:</div><input type="text" />
+                    <div>First Name:</div><input type="text" ng-model="review.firstName" ng-disabled="sendingReview" />
+                    <div>Last Name:</div><input type="text" ng-model="review.lastName" ng-disabled="sendingReview"/>
                 </div>
             </div>
             <div flex="65" style="padding-left:10px;">
                 <div>Your Review</div>
-                <textarea style="resize:none; height:72px; width:99%"></textarea>
+                <textarea ng-model="review.text" ng-disabled="sendingReview" style="resize:none; height:72px; width:99%"></textarea>
             </div>
             <div flex="15" style="position:relative;">
-                <md-button style="position:absolute; bottom:0; right:0; margin-bottom:0;"class="md-raised md-primary" ng-click="addReview($event,review.place_id)">Add Review</md-button>
+                <md-button style="position:absolute; bottom:0; right:0; margin-bottom:0"
+                           class="md-raised md-primary"
+                           ng-disabled="sendingReview"
+                           ng-click="addReview($event)">Add Review</md-button>
             </div>
         </div>
     </div>
+    <div >
+        <div ng-repeat="review in place.reviews" flex layout="row" style="border:1px solid #ccc; padding:20px">
+            <div flex="10" style="font-size:14px;">
+                <span style="margin-left: 20px;"><b>{{review.likes}}</b></span>
+                <md-button ng-click="addLike(review)"
+                           ng-disabled="review._likeAdded"
+                           style="min-width:inherit;">&#128077;</md-button>
+            </div>
+            <div flex="70" style="padding-top: 15px;">{{review.text}}</div>
+            <div flex="20">
+                <b>{{review.first_name + ' ' + review.last_name}}</b>
+                <br>
+                {{review.fs_created_timestamp}}
+            </div>
+        </div>
+    </div>
+
 </md-content>

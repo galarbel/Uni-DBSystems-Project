@@ -19753,4 +19753,9 @@ header {
       header ul li:hover div {
         text-decoration: underline; }
 
+.place-info-table th {
+  text-align: left;
+  vertical-align: top;
+  padding-right: 5px; }
+
 /*# sourceMappingURL=main.css.map */
