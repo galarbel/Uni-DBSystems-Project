@@ -4,8 +4,6 @@ include_once '../Global/config.php';
 
 $sqlQuery = "call web_get_culinary_day (?, ?, ?, ?, ?, ?)";
 
-$lati = 40.759082; /*Times Square , NY */
-$longi = -73.985088;
 $max_price = 4;
 $night_person = 1;
 $max_distance = 0.1;
