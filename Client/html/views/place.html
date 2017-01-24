@@ -1,0 +1,109 @@
+<md-content layout="column" ng-controller="placeDetailsCtrl" ng-init="init()">
+    <div layout="column" ng-hide="fetching">
+        <h2>{{place.name}}
+            <md-button class="md-raised md-primary" style="float:right;"
+                       ng-click="refreshStatsFromFourSquare(place.id)">Update From Foursquare
+            </md-button>
+        </h2>
+        <div layout="row">
+            <div
+                    ng-style="imgStyle"
+                    style="background-size: contain; background-repeat: no-repeat; width:400px; height: 350px;"
+                    flex
+            ></div>
+            <div flex style="margin-left: 10px;">
+                <table class="place-info-table">
+                    <tbody>
+                    <tr>
+                        <th>Address</th>
+                        <td>{{place.address}} <br> {{place.city + ", " + (place.state ? place.state + ", ": "") +
+                            place.country}}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Website</th>
+                        <td><a href="{{place.url}}" target="_blank">{{place.url}}</a></td>
+                    </tr>
+
+                    <tr>
+                        <th>Contact Number</th>
+                        <td>{{place.phone}}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Rating</th>
+                        <td>{{place.rating}}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Price Rating</th>
+
+                        <td><span ng-repeat="x in arrayRepeat(place.price)">$</span></td>
+                    </tr>
+
+                    <tr>
+                        <th># Checkins<span style="font-weight: normal;">(unique)</span></th>
+                        <td>{{place.checkins + " (" + place.users + ")"}}</td>
+                    </tr>
+
+                    <tr>
+                        <th># Likes</th>
+                        <td>{{place.likes}}</td>
+                    </tr>
+                    <tr>
+                        <th>Last updated:</th>
+                        <td>{{place.lastUpdated|date: 'HH:mm d/M/yy'}}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <h3>Reviews</h3>
+        <div style="margin-bottom: 20px;">
+            <h4 style="margin:0px;">Add your own</h4>
+            <div layout="row">
+                <div flex=20 layout="column">
+                    <div>
+                        <div>First Name:</div>
+                        <input type="text" ng-model="newReview.firstName" ng-disabled="sendingReview"/>
+                        <div>Last Name:</div>
+                        <input type="text" ng-model="newReview.lastName" ng-disabled="sendingReview"/>
+                    </div>
+                </div>
+                <div flex="65" style="padding-left:10px;">
+                    <div>Your Review</div>
+                    <textarea ng-model="newReview.text" ng-disabled="sendingReview"
+                              style="resize:none; height:72px; width:99%"></textarea>
+                </div>
+                <div flex="15" style="position:relative;">
+                    <md-button style="position:absolute; bottom:0; right:0; margin-bottom:0"
+                               class="md-raised md-primary"
+                               ng-disabled="sendingReview"
+                               ng-click="addReview($event)">Add Review
+                    </md-button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div ng-repeat="review in place.reviews" flex layout="row" style="border:1px solid #ccc; padding:20px">
+                <div flex="10" style="font-size:14px;">
+                    <span style="margin-left: 20px;"><b>{{review.likes}}</b></span>
+                    <md-button ng-click="addLike(review)"
+                               ng-disabled="review._likeAdded"
+                               style="min-width:inherit;">&#128077;</md-button>
+                </div>
+                <div flex="70" style="padding-top: 15px;">{{review.text}}</div>
+                <div flex="20">
+                    <b>{{review.firstName + ' ' + review.lastName}}</b>
+                    <br>
+                    {{review.createdAt | date : 'HH:mm d/M/yy'}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div flex="grow" ng-show="fetching" layout="column"  layout-align="center center" style="min-height:200px;">
+        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+    </div>
+</md-content>

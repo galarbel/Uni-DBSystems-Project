@@ -1,7 +1,6 @@
 angular.module('app')
     .constant('config', {
         server: {
-            url: '',
-            port: ''
+            url: 'http://localhost/databasesystems/Server/WS/'
         }
     });

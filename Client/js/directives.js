@@ -1,5 +1,5 @@
 angular.module('app')
-    .directive('mapToLl', function (lodash,NgMap) {
+    .directive('mapToLl', function (lodash, NgMap, config) {
         return {
             restrict: 'E',
             templateUrl: 'html/directives/mapToLL.html',
@@ -7,22 +7,23 @@ angular.module('app')
                 lat: '=',
                 lon: '='
             },
-            link: function(scope){
-                scope.$watchGroup(['lat', 'lon'],function(){
-                    NgMap.getMap().then(function(map){
+            link: function (scope) {
+                scope.API_KEY = config.googleMapsApiKey;
+                scope.$watchGroup(['lat', 'lon'], function () {
+                    NgMap.getMap().then(function (map) {
                         map.panTo({
                             lat: scope.lat,
                             lng: scope.lon
                         })
                     })
                 })
-                scope.mapClicked = function(ev){
+                scope.mapClicked = function (ev) {
                     var ll = {
                         lon: ev.latLng.lng(),
                         lat: ev.latLng.lat()
                     };
-                    lodash.extend(scope,ll);
+                    lodash.extend(scope, ll);
                 }
             }
         }
-    })
+    });

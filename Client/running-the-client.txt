@@ -1,4 +1,0 @@
-run an http client from this directory.
-if you have node.js, you can install and run an http-server using these commands
-npm i -g live-server
-live-server

@@ -1,0 +1,35 @@
+<md-dialog>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Pick a replacement</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon>close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-padding layout="column">
+        <md-subheader class="md-primary">
+            We found other places that also match your search
+        </md-subheader>
+        <md-list>
+            <md-list-item
+                    class="md-3-line"
+                    ng-repeat="place in replacements track by $index"
+                    ng-click="choose(place)">
+                <img ng-src="{{place.image}}" class="md-avatar" alt=""/>
+                <div class="md-list-item-text" layout="column">
+                    <h3>{{ place.name }}</h3>
+                    <h4>{{ place.categoriesArray.join(', ') }}</h4>
+                    <p>{{place.address}},{{place.city + ", " + (place.state ? place.state + ", ": "") + place.country}}</p>
+                </div>
+            </md-list-item>
+        </md-list>
+    </md-dialog-content>
+    <!--<md-dialog-actions layout="row">-->
+        <!--<span flex></span>-->
+        <!--<md-button class="md-raised md-primary" ng-click="null">-->
+            <!--useless button?-->
+        <!--</md-button>-->
+    <!--</md-dialog-actions>-->
+</md-dialog>

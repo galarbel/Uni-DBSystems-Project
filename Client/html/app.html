@@ -2,7 +2,15 @@
     <md-nav-bar  md-selected-nav-item="currentPage" >
         <md-nav-item md-nav-click="goto('day')" name="day">Plan Day</md-nav-item>
         <md-nav-item md-nav-click="goto('places')" name="places">Places</md-nav-item>
+        <md-nav-item md-nav-click="goto('travel')" name="travel">Travel</md-nav-item>
     </md-nav-bar>
-    <md-content layout="row" layout-padding="" ng-switch-when="day"><ng-include src="'/html/views/day.html'"></ng-include></md-content>
-    <md-content layout="row" layout-padding="" ng-switch-when="places"><ng-include src="'/html/views/find.html'"></ng-include></md-content>
+    <md-content flex layout="row" layout-padding ng-switch-when="day">
+        <ng-include flex layout="row" src="'html/views/day.html'"></ng-include>
+    </md-content>
+    <md-content flex layout="row" layout-padding ng-switch-when="places">
+        <ng-include flex layout="row" src="'html/views/places.html'"></ng-include>
+    </md-content>
+    <div flex layout="row" layout-padding ng-switch-when="travel">
+        <ng-include flex="noshrink" layout="row" src="'html/views/travel.html'"></ng-include>
+    </div>
 </div>

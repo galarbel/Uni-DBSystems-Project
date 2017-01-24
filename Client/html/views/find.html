@@ -1,3 +1,120 @@
-<div>
-    find
-</div>
+<md-content  layout="column" ng-controller="placesSearchCtrl" ng-init="resetSearch()">
+    <!--<md-content flex="nogrow" style="width: 1024px;border : 1px solid red" layout="column" ng-controller="placesSearchCtrl">-->
+
+    <div layout="column" layout-margin ng-hide="showResults || fetching">
+        <h3 class="md-display-1">
+            Choose a search method to find the place to eat at:
+        </h3>
+        <div flex="noshrink" layout="column" md-whiteframe="3">
+            <md-toolbar>
+                <h1 class="md-toolbar-tools">Use a full text search</h1>
+            </md-toolbar>
+            <div flex="noshrink" layout="row" layout-margin>
+                <div md-whiteframe="1" flex="grow" layout="row">
+                    <input flex="grow" style="border: none; padding: 5px;" type="search" ng-model="searchText"/>
+                    <div ng-show="searchText" ng-click="searchText=''" flex="noshrink" layout
+                         layout-align="center center"
+                         style="background: white; cursor: pointer">
+                        <md-icon flex>close</md-icon>
+                    </div>
+                </div>
+                <md-button class="md-primary md-raised" ng-disabled="!searchText" ng-click="textSearch(0)">
+                    Search
+                </md-button>
+            </div>
+        </div>
+        <div flex="noshrink" layout="column" md-whiteframe="3">
+            <md-toolbar>
+                <h1 class="md-toolbar-tools">... or search places by properties</h1>
+            </md-toolbar>
+            <div flex="noshrink" layout="column" layout-margin>
+                <form name="filtersForm" layout="column" >
+                    <div layout="row">
+                        <md-slider-container flex="50">
+                            <p style="min-width: 70px">Price</p>
+                            <md-slider flex md-discrete step="1" min="0" max="4" ng-model="params.price"></md-slider>
+                        </md-slider-container>
+                        <md-slider-container flex="50">
+                            <p style="min-width: 70px">Minimum Rating</p>
+                            <md-slider flex min="0" max="10" md-discrete step="0.1"
+                                       ng-model="params.minRating"></md-slider>
+                        </md-slider-container>
+                    </div>
+                    <div layout="row" layout-margin>
+                        <md-autocomplete
+                                flex="100"
+                                md-selected-item="selectedCity"
+                                md-search-text="citySearchText"
+                                md-selected-item-change="params.city = selectedCity.id"
+                                md-items="city in matchCity(citySearchText)"
+                                md-item-text="city.name"
+                                md-min-length="2"
+                                placeholder="City">
+                            <md-item-template>
+                                <span >{{city.name}}</span>
+                            </md-item-template>
+                            <md-not-found>
+                                No cities matching were found.
+                            </md-not-found>
+                        </md-autocomplete>
+                        <!--<md-select ng-model="params.city" placeholder="City" flex="100" required>-->
+                            <!--<md-option ng-repeat="city in cities" ng-value="city.id">{{city.name}}</md-option>-->
+                        <!--</md-select>-->
+                        <md-select ng-model="params.category" placeholder="Category" flex="50" >
+                            <md-option ng-repeat="category in categories" ng-value="category.id">{{category.name}}
+                            </md-option>
+                        </md-select>
+                        <md-select ng-model="params.type" placeholder="Ideal For" flex="50" >
+                            <md-option ng-value="1">Morning</md-option>
+                            <md-option ng-value="2">Lunch</md-option>
+                            <md-option ng-value="3">Dinner</md-option>
+                            <md-option ng-value="4">Night</md-option>
+                        </md-select>
+                    </div>
+                    <div layout="row">
+                        <p flex=""></p>
+                        <md-button class="md-primary md-raised" ng-disabled="filtersForm.$invalid" ng-click="filterSearch(0)">
+                            Search
+                        </md-button>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+    <div flex="" ng-show="fetching" layout="column"  layout-align="center center" style="min-height:200px;">
+        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+    </div>
+
+    <md-toolbar ng-show="showResults">
+        <div class="md-toolbar-tools">
+            <h2>{{places.length}} results <span ng-show="resultsQuery">for "{{resultsQuery}}"</span></h2>
+            <span flex></span>
+            <md-button ng-click="resetSearch()">Search Again</md-button>
+        </div>
+    </md-toolbar>
+
+    <md-content ng-show="showResults" flex md-whiteframe="4">
+        <md-subheader ng-show="places.length == 100" class="md-primary">
+            Here are the 100 best results for your query. If you can't find what you're looking for, try refining your search
+        </md-subheader>
+        <md-list>
+            <md-list-item ng-repeat="pl in places" ng-click="gotoPlace(pl.id)" class="md-2-line" layout="row">
+                <img ng-src="{{pl.image}}" class="md-avatar" />
+                <div flex class="md-list-item-text" layout="column">
+                    <h3>{{pl.name}} ({{pl.rating || 'Unrated'}})</h3>
+                    <p>{{pl.address}},
+                        {{pl.city}},
+                        {{pl.state}}{{pl.country.toLowerCase() !== 'united states' ? ', ' + pl.country : ''}}
+                    </p>
+                </div>
+                <md-icon class="md-secondary">zoom_out_map</md-icon>
+            </md-list-item>
+        </md-list>
+    </md-content>
+    <div>
+        <!--<cl-paging flex cl-pages="paging.total" cl-steps="6" cl-page-changed="paging.onPageChanged()" cl-align="start start" cl-current-page="paging.current"></cl-paging>-->
+
+    </div>
+</md-content>
