@@ -22,7 +22,7 @@ angular.module('app')
                 $mdToast.simple()
                     .textContent(msg)
                     .position('top right')
-                    .hideDelay(0)
+                    .hideDelay(10000)
                     .action('ok')
                     // .capsule(true)
                     .highlightAction(true)
@@ -105,6 +105,9 @@ angular.module('app')
                 .then(function (day) {
                     $scope.fetching = false;
                     state.day = day;
+                    if(!day.length){
+                        $scope.errToast("Can't find a day for you. Currently only US venues are available");
+                    }
                 })
                 .catch(function (err) {
 
