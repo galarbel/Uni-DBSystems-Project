@@ -294,7 +294,8 @@ angular.module('app')
                 price: params.price,
                 meal: params.type,
                 m_rating: params.minRating
-            });
+            }).then(_transformPlaces)
+                .catch(_logAndThrow);
             //mock
             /*var places = [];
              for (var i = skip; i < skip + limit; i++) {
@@ -321,7 +322,7 @@ angular.module('app')
             filterSearch: filterSearch
         }
     })
-    .factory('staticServerData', function (server, lodash, $q,$rootScope) {
+    .factory('staticServerData', function (server, lodash, $q, $rootScope) {
         function error(e) {
             console.error("Error loading resource", e);
             $rootScope.errToast("Problem loading options for form")

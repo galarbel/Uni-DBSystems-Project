@@ -25,7 +25,6 @@ angular.module('app')
                     .hideDelay(0)
                     .action('ok')
                     // .capsule(true)
-                    .theme('md-accent')
                     .highlightAction(true)
             );
         };
@@ -36,6 +35,9 @@ angular.module('app')
             $scope.userLocation = angular.extend({}, v);
             console.log(v)
         }, true);
+        $scope.$watchCollection('state.day',function(day){
+            $scope.day = day;
+        })
 
         $scope.openLocationDialog = function (ev) {
             $mdDialog.show({
@@ -71,10 +73,10 @@ angular.module('app')
                         locals: {
                             replacements: replacements
                         }
-                    });
+                    })
                 })
                 .then(function (replacement) {
-                    var indexOfPlace = $scope.day.reduce(function (i, place, currentIndex) {
+                    var indexOfPlace = state.day.reduce(function (i, place, currentIndex) {
                         if (place._placeType == replacement._placeType) {
                             i = currentIndex;
                         }
@@ -84,9 +86,12 @@ angular.module('app')
                         console.error(replacement);
                         throw new Error("Can't find place to insert replacement");
                     }
-                    $scope.day.splice(indexOfPlace, 1, replacement);//model change to trigger view change
+                    state.day.splice(indexOfPlace, 1, replacement);//model change to trigger view change
                 })
                 .catch(function (err) {
+                    if(!err){
+                        return;
+                    }
                     console.error(err);
                     $scope.errToast("Something bad happened");
                 });
@@ -99,9 +104,10 @@ angular.module('app')
             placesConnection.getDay($scope.params)
                 .then(function (day) {
                     $scope.fetching = false;
-                    $scope.day = day;
+                    state.day = day;
                 })
                 .catch(function (err) {
+
                     console.error(err);
                     $scope.errToast("Something bad happened");
                 })
@@ -109,7 +115,7 @@ angular.module('app')
 
         $scope.params = {
             price: 2,
-            distance: 500,
+            distance: 0.6,
             night: false,
             nightAndBreakfast: false
         }
@@ -161,6 +167,7 @@ angular.module('app')
             $scope.currentPage = 0;
             $scope.searchText = '';
             $scope.showResults = false;
+            $scope.resultsQuery = null;
             $scope.params = {
                 price: 3,
                 minRating: 6.0

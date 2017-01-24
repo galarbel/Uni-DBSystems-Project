@@ -15,20 +15,33 @@
                     <p>Set Your Location</p>
                     <md-icon class="md-secondary">open_in_new</md-icon>
                 </md-list-item>
-                <md-list-item>
-                    <md-slider-container flex>
-                        <p>Radius</p>
-                        <md-slider flex min="0" max="2000" ng-model="params.distance"></md-slider>
-                        <md-input-container>
-                            <input flex step="100" type="number" ng-model="params.distance">
-                        </md-input-container>
-                    </md-slider-container>
+                <md-list-item >
+                    <div flex layout="column">
+                        <div>
+                            <span>How far are you willing to travel?</span>
+                        </div>
+                        <div layout="row">
+                            <md-slider-container flex>
+                                <p>Radius</p>
+                                <md-slider flex step="0.01" min="0.5" max="2" ng-model="params.distance">
+                                </md-slider>
+                            </md-slider-container>
+                        </div>
+                    </div>
                 </md-list-item>
                 <md-list-item>
-                    <md-slider-container flex>
-                        <p>Price</p>
-                        <md-slider flex md-discrete step="1" min="1" max="4" ng-model="params.price"></md-slider>
-                    </md-slider-container>
+                    <div flex layout="column">
+                        <div>
+                            <span>How much are you willing to pay?</span>
+                        </div>
+                        <div layout="row">
+                            <md-slider-container flex>
+                                <p>Price</p>
+                                <md-slider flex md-discrete step="1" min="1" max="4" ng-model="params.price">
+                                </md-slider>
+                            </md-slider-container>
+                        </div>
+                    </div>
                 </md-list-item>
                 <md-list-item>
                     <p>I'm a night person!</p>
@@ -67,9 +80,9 @@
                         <!--<span class="md-subhead">{{place.category_name}}</span>-->
                     </md-card-header-text>
                 </md-card-header>
-                <div class="place-pic-day" style="background-image: url({{place.image}});" >
+                <div class="place-pic-day" style="background-image: url({{place.image}});">
                     <!--<img ng-src="{{place.image}}" class="md-card-image"-->
-                         <!--style="min-width: 100%; position:absolute">-->
+                    <!--style="min-width: 100%; position:absolute">-->
                 </div>
                 <md-card-title>
                     <md-card-title-text>
@@ -78,6 +91,7 @@
                 </md-card-title>
                 <md-card-content>
                     <p>Categories: {{place.categoriesArray.join(", ")}}</p>
+                    <p>{{place.address}},{{place.city + ", " + (place.state ? place.state + ", ": "") + place.country}}</p>
                 </md-card-content>
                 <md-card-actions layout="row" layout-align="end center">
                     <md-button class="md-raised md-primary" ng-click="gotoPlace(place.id)">details</md-button>
