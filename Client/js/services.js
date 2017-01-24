@@ -235,6 +235,9 @@ angular.module('app')
                 price: price
             })
                 .then(function (city) {
+                    if(!city){
+                        return null;
+                    }
                     return {
                         name: city.city_name,
                         state: city.state_code,

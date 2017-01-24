@@ -326,6 +326,9 @@ angular.module('app')
             }
             placesConnection.getCityRecommendation($scope.categoryId, $scope.price)
                 .then(function (city) {
+                    if(!city){
+                        $scope.errToast("Can't find city for these parameters");
+                    }
                     $scope.city = city;
                 })
                 .catch(function (err) {
