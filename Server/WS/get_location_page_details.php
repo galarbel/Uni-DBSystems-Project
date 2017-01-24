@@ -2,13 +2,8 @@
 
 include_once '../Global/config.php';
 
-if (isset($_REQUEST["place_id"]) ) {
-    $place_id = $_REQUEST["place_id"];
-} else {
-    echo "missing 'place_id' parameter"; die;
-}
 
-header('Content-type: application/json');
+$place_id = getNumericParamOrDefault($_REQUEST, "place_id", true, null);
 
 $getPlaceDataQuery = "call web_get_place_data_by_id (?)";
 $place_data = $db->rawQuery($getPlaceDataQuery, [$place_id])[0];
@@ -21,6 +16,7 @@ $place_reviews = $db->rawQuery($getReviewsQuery, [$place_id]);
 $place_data["reviews_count"]= count($place_reviews);
 $place_data["reviews"]= $place_reviews;
 
+header('Content-type: application/json');
 echo json_encode($place_data);
 
 ?>

@@ -39,5 +39,24 @@ function getVenueStatsFromFourSquare($id) {
     return $curlResult;
 }
 
+function badRequest($errorMessage) {
+    http_response_code(400);
+    echo $errorMessage;
+    die;
+}
 
+function getNumericParamOrDefault($requestParams, $paramName, $isRequired, $defaultValue) {
+    if(isset($requestParams[$paramName])) {
+        $paramValue = $requestParams[$paramName];
+        if(is_numeric($paramValue))  {
+            return $paramValue;
+        } else {
+            badRequest("parameter '" .$paramName . "'' is not a number");
+        }
+    } else if (!$isRequired){
+        return $defaultValue;
+    } else {
+        badRequest("parameter '" .$paramName . "'' is missing");
+    }
+}
 ?>

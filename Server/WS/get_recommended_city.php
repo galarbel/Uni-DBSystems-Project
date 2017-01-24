@@ -4,30 +4,15 @@ include_once '../Global/config.php';
 
 $sqlQuery = "call web_get_buzz_city (?, ?)";
 
-$category_id = null;
-$max_price = null;
+$default_max_price = null;
 
-if (isset($_REQUEST["categoryId"]) && is_numeric($_REQUEST["categoryId"])) {
-    $category_id = $_REQUEST["categoryId"];
-}
-
-if (isset($_REQUEST["price"]) && is_numeric($_REQUEST["price"])) {
-    $max_price = $_REQUEST["price"];
-}
-
-if (!$category_id) {
-    die;
-}
-
-
-/* OK - print JSON */
-
-header('Content-type: application/json');
+$category_id = getNumericParamOrDefault($_REQUEST, "categoryId", true, null); // mandatory
+$max_price = getNumericParamOrDefault($_REQUEST, "price", false, $default_max_price); // optional
 
 $requestsParams = [$category_id, $max_price];
 $results = $db->rawQuery($sqlQuery, $requestsParams)[0];
 
-
+header('Content-type: application/json');
 echo json_encode($results);
 
 ?>

@@ -4,19 +4,11 @@ include_once '../Global/config.php';
 
 $sqlUpdate = "call web_upd_place_stats (?, ?, ?, ?, ?)";
 
-$place_id = null;
-$check_count = null;
-$users_count = null;
-$likes = null;
-$rating = null;
-
-if (isset($_REQUEST["place_id"]) && is_numeric($_REQUEST["place_id"])) {
-    $place_id = $_REQUEST["place_id"];
-}
+$place_id = getNumericParamOrDefault($_REQUEST, "place_id", true, null);
 
 $sqlQuery = "SELECT foursquare_id FROM Places WHERE place_id = ?";
-
 $results = $db->rawQuery($sqlQuery, [$place_id]);
+
 $foursquare_id  = isset( $results[0]["foursquare_id"]) ?  $results[0]["foursquare_id"] : 0;
 
 $pStats = json_decode(getVenueStatsFromFourSquare($foursquare_id ));

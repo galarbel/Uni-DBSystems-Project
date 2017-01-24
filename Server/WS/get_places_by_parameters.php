@@ -4,49 +4,27 @@ include_once '../Global/config.php';
 
 $sqlQuery = "call web_get_places_by_parameters (?, ?, ?, ?, ?)";
 
-$city_id = null;
-$category_id = null;
-$max_price = 4;
-$meal_id = null;
-$minimum_rating = 6.0;
+$default_city_id = null;
+$default_category_id = null;
+$default_max_price = 4;
+$default_meal_id = null;
+$default_minimum_rating = 6.0;
 
-if (isset($_REQUEST["city"]) && is_numeric($_REQUEST["city"])) {
-    $city_id = $_REQUEST["city"];
-}
-
-if (isset($_REQUEST["category"]) && is_numeric($_REQUEST["category"])) {
-    $category_id = $_REQUEST["category"];
-}
-
-if (isset($_REQUEST["price"]) && is_numeric($_REQUEST["price"])) {
-    $max_price = $_REQUEST["price"];
-}
-
-if (isset($_REQUEST["meal"]) && is_numeric($_REQUEST["meal"])) {
-    $meal_id = $_REQUEST["meal"];
-}
-
-if (isset($_REQUEST["m_rating"]) && is_numeric($_REQUEST["m_rating"])) {
-    $minimum_rating = $_REQUEST["m_rating"];
-}
-
-
-/* OK - print JSON */
-
-header('Content-type: application/json');
-
-$return = [];
-
+$city_id = getNumericParamOrDefault($_REQUEST, "city", false, $default_city_id);
+$category_id = getNumericParamOrDefault($_REQUEST, "category", false, $default_category_id);
+$max_price = getNumericParamOrDefault($_REQUEST, "price", false, $default_max_price);
+$meal_id = getNumericParamOrDefault($_REQUEST, "meal", false, $default_meal_id);
+$minimum_rating = getNumericParamOrDefault($_REQUEST, "m_rating", false, $default_minimum_rating);
 
 $requestsParams = [$city_id, $category_id, $max_price,$meal_id,$minimum_rating];
 $results = $db->rawQuery($sqlQuery, $requestsParams);
 
-//echo json_encode($results); die;
 for ($i = 0; $i < sizeof($results); $i++) {
     parsePlaceCategories($results[$i]);
     parsePlacePhoto($results[$i]);
 }
 
+header('Content-type: application/json');
 echo json_encode($results);
 
 ?>
