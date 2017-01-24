@@ -38,7 +38,7 @@ angular.module('app')
         };
 
         server.textSearch = function (searchText) {
-            return $http.get(url + 'search_venue.php', {
+            return $http.get(url + 'search_place_by_text.php', {
                 params: {
                     text: searchText
                 }
@@ -51,7 +51,7 @@ angular.module('app')
             }).then(extractData)
         };
         server.replace = function (params) {
-            return $http.get(url + 'get_day_plan_options.php', {
+            return $http.get(url + 'get_meal_replacement_options.php', {
                 params: params
             }).then(extractData)
         };
