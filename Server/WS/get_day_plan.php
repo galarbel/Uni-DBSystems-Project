@@ -9,12 +9,12 @@ $default_night_person = 1;
 $default_max_distance = 0.1;
 $default_force_morning = 1;
 
-$max_price = $getNumericParamOrDefault($_REQUEST, "price", false, $default_max_price);
-$night_person = $getNumericParamOrDefault($_REQUEST, "night_person", false, $default_night_person);
-$max_distance = $getNumericParamOrDefault($_REQUEST, "distance", false, $default_max_distance);
-$force_morning = $getNumericParamOrDefault($_REQUEST, "force_morning", false, $default_force_morning);
-$lati = $getNumericParamOrDefault($_REQUEST, "latitude", true, null);
-$longi = $getNumericParamOrDefault($_REQUEST, "longitude", true, null);
+$max_price = getNumericParamOrDefault($_REQUEST, "price", false, $default_max_price);
+$night_person = getNumericParamOrDefault($_REQUEST, "night_person", false, $default_night_person);
+$max_distance = getNumericParamOrDefault($_REQUEST, "distance", false, $default_max_distance);
+$force_morning = getNumericParamOrDefault($_REQUEST, "force_morning", false, $default_force_morning);
+$lati = getNumericParamOrDefault($_REQUEST, "latitude", true, null);
+$longi = getNumericParamOrDefault($_REQUEST, "longitude", true, null);
 
 $return = [];
 
