@@ -24,10 +24,10 @@ include_once '../Global/config.php';
 $post_body = json_decode(file_get_contents('php://input'), true);
 
 // check params
-if (!isset($post_body["review_text"])) {
+if (empty($post_body["review_text"])) {
     badRequest("missing 'review_text' parameter");
 }
-if (!isset($post_body["first_name"])) {
+if (empty($post_body["first_name"])) {
     badRequest("missing 'first_name' parameter");
 }
 $place_id = getNumericParamOrDefault($post_body, "place_id", true, null);
