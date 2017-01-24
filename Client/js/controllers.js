@@ -110,7 +110,6 @@ angular.module('app')
                     }
                 })
                 .catch(function (err) {
-
                     console.error(err);
                     $scope.errToast("Something bad happened");
                 })
