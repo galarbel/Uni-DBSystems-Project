@@ -64,7 +64,7 @@ angular.module('app')
                     $scope.fetching = false;
                     if (!replacements || !replacements.length) {
                         $scope.errToast("No Replacements Found");
-                        return
+                        throw null;
                     }
                     return $mdDialog.show({
                         controller: 'replaceDialogCtrl',
