@@ -133,7 +133,7 @@ angular.module('app')
                 image: place.photo_url || place.photo,
                 country: place.country_name,
                 address: place.address,
-                rating: place.rating,
+                rating: Math.round(10*place.rating)/10,
                 _placeType: place._placeType,
                 categoriesArray: place.categoriesArray,
                 reviews: place.reviews,
