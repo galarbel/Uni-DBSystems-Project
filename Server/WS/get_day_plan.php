@@ -7,19 +7,19 @@ include_once '../Global/config.php';
  *  Method : GET
  *
  *  Required parameters:
-     *  latitude - numeric
-     *  latitude - numeric
+ *  latitude - numeric
+ *  latitude - numeric
  *
  *  Optional parameters:
-    *  price - numeric (1-4). default value: 4. The maximum price level the user is willing to spend
-    *  night_person - numeric (0 or 1). default value: 1. Whether or not to suggest a venue suitable for late hours
-    *  distance - numeric. default value: 0.1. The maximum distance between suggested venues and the user's location
-    *  force_morning - numeric (0 or 1). default value: 1. Whether or not to suggest a breakfast venue even if the user is a night person.
+ *  price - numeric (1-4). default value: 4. The maximum price level the user is willing to spend
+ *  night_person - numeric (0 or 1). default value: 1. Whether or not to suggest a venue suitable for late hours
+ *  distance - numeric. default value: 0.1. The maximum distance between suggested venues and the user's location
+ *  force_morning - numeric (0 or 1). default value: 1. Whether or not to suggest a breakfast venue even if the user is a night person.
  *
  *  Returns:
-     *  On success - Success (200) with the day plan array that contains at most 4 venues, and a subset of their related data.
-     *  On invalid params - Bad Request (400) with an error message
-     *  On DB error - Internal Server Error (500) with an error message
+ *  On success - Success (200) with the day plan array that contains at most 4 venues, and a subset of their related data.
+ *  On invalid params - Bad Request (400) with an error message
+ *  On DB error - Internal Server Error (500) with an error message
  */
 
 

@@ -39,7 +39,7 @@ $minimum_rating = getNumericParamOrDefault($_REQUEST, "m_rating", false, $defaul
 $requestsParams = [$city_id, $category_id, $max_price,$meal_id,$minimum_rating];
 $results = $db->rawQuery($sqlQuery, $requestsParams);
 
-// convert results to client compatible form.
+// convert results to be client compatible.
 for ($i = 0; $i < sizeof($results); $i++) {
     parsePlaceCategories($results[$i]);
     parsePlacePhoto($results[$i]);

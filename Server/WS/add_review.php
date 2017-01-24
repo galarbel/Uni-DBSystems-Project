@@ -7,17 +7,17 @@ include_once '../Global/config.php';
  *  Method : POST
  *
  *  Required body properties:
-     *  place_id - numeric
-     *  review_text
-     *  first_name
+ *  place_id - numeric
+ *  review_text
+ *  first_name
  *
  *  Optional body properties:
- *      last_name, default value: null
+ *  last_name, default value: null
  *
  *  Returns:
-     *  On success - Success (200) with no content
-     *  On invalid params - Bad Request (400) with an error message
-     *  On DB error - Internal Server Error (500) with an error message
+ *  On success - Success (200) with no content
+ *  On invalid params - Bad Request (400) with an error message
+ *  On DB error - Internal Server Error (500) with an error message
  */
 
 // get POST body

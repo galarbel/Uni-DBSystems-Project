@@ -7,7 +7,7 @@ include_once '../Global/config.php';
  *  Method : GET
  *
  *  Required parameters:
-    * categoryId = numeric. The user's desired venues category.
+ *  categoryId = numeric. The user's desired venues category.
  *
  *  Optional parameters:
  *  price - numeric (1-4). default value: 4. The maximum price level the user is willing to spend

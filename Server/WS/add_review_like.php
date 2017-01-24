@@ -7,12 +7,12 @@ include_once '../Global/config.php';
  *  Method : POST
  *
  *  Required body properties:
-    *  review_id - numeric
+ *  review_id - numeric
  *
  *  Returns:
-     *  On success - Success (200) with no content
-     *  On invalid params - Bad Request (400) with an error message
-     *  On DB error - Internal Server Error (500) with an error message
+ *  On success - Success (200) with no content
+ *  On invalid params - Bad Request (400) with an error message
+ *  On DB error - Internal Server Error (500) with an error message
  */
 
 header('Content-type: application/json');

@@ -9,8 +9,8 @@ include_once '../Global/config.php';
  *  Required/optional parameters: none.
  *
  *  Returns:
-     *  On success - Success (200) with a list of cities (ID's and names)
-     *  On DB error - Internal Server Error (500) with an error message
+ *  On success - Success (200) with a list of cities (ID's and names)
+ *  On DB error - Internal Server Error (500) with an error message
  */
 
 $sqlQuery = "SELECT city_id, city_name FROM Cities ";

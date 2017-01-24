@@ -7,18 +7,18 @@ include_once '../Global/config.php';
  *  Method : GET
  *
  *  Required parameters:
-    *  latitude - numeric
-    *  latitude - numeric
-    *  meal - numeric (1-4). The meal to find replacements for (breakfast, dinner...)
+ *  latitude - numeric
+ *  latitude - numeric
+ *  meal - numeric (1-4). The meal to find replacements for (breakfast, dinner...)
  *
  *  Optional parameters:
-    *  price - numeric (1-4). default value: 4. The maximum price level the user is willing to spend
-    *  distance - numeric. default value: 0.1. The maximum distance between suggested venues and the user's location
+ *  price - numeric (1-4). default value: 4. The maximum price level the user is willing to spend
+ *  distance - numeric. default value: 0.1. The maximum distance between suggested venues and the user's location
  *
  *  Returns:
-    *  On success - Success (200) with list of places that matches the parameters
-    *  On invalid params - Bad Request (400) with an error message
-    *  On DB error - Internal Server Error (500) with an error message
+ *  On success - Success (200) with list of places that matches the parameters
+ *  On invalid params - Bad Request (400) with an error message
+ *  On DB error - Internal Server Error (500) with an error message
  */
 
 

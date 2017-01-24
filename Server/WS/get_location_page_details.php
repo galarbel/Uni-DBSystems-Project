@@ -6,13 +6,13 @@ include_once '../Global/config.php';
  *
  *  Method : GET
  *
-    *  Required parameters:
-    *  place_id - numeric
+ *  Required parameters:
+ *  place_id - numeric
  *
  *  Returns:
-    *  On success - Success (200) with all the place's info relevant to be displayed in a 'place specific' page
-    *  On invalid params - Bad Request (400) with an error message
-    *  On DB error - Internal Server Error (500) with an error message
+ *  On success - Success (200) with all the place's info relevant to be displayed in a 'place specific' page
+ *  On invalid params - Bad Request (400) with an error message
+ *  On DB error - Internal Server Error (500) with an error message
  */
 $place_id = getNumericParamOrDefault($_REQUEST, "place_id", true, null);
 
