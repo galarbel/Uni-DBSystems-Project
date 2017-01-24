@@ -16,6 +16,9 @@ function parsePlacePhoto(&$place) {
     $place["photo"] = $place["photo_prefix"] . $place["photo_width"] . 'x' . $place["photo_height"] . $place["photo_suffix"];
     unset($place["photo_prefix"], $place["photo_width"], $place["photo_height"], $place["photo_suffix"]);
     //TODO if one is missing- replace with default photo url
+    if ($place["photo"] == "x") {
+        $place["photo"] = "https://cdn0.iconfinder.com/data/icons/kameleon-free-pack-rounded/110/Food-Dome-512.png";
+    }
 }
 
 /** Executes a curl call
