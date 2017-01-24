@@ -13,8 +13,7 @@
     "angular-material": "^1.1.1",
     "ng-lodash": "^0.5.0",
     "ngmap": "^1.17.8",
-    "ngGeolocation": "^0.0.8",
-    "material-angular-paging": "*"
+    "ngGeolocation": "^0.0.8"
   },
   "resolutions": {
     "angular": "1.6.0"

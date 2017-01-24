@@ -100,7 +100,7 @@ angular.module('app')
     })
     .factory('state', function () {
         return {
-            currentPage: 'day',//or 'places'
+            currentPage: 'day',//or 'places' or 'travel'
             placeCurrentPage: 'search',//or 'place'
             ll: {
                 lon: -74,
@@ -160,27 +160,6 @@ angular.module('app')
             return server.placeDetails(id)
                 .then(_transformPlace)
                 .catch(_logAndThrow);
-            /* //mock
-             return $timeout(angular.noop, 150)
-             .then(function () {
-             return {
-             name: 'Place Name',
-             categoryName: "Category Name",
-             state: 'NY',
-             city: 'New York',
-             address: '1st Avenue 5342543',
-             url: 'http://www.google.com',
-             phone: '054-7564553',
-             price: 3,
-             reviews: [
-             {
-             text: 'lorem ipsum',
-             likes: 5
-             }
-             ],
-             image: 'https://irs0.4sqi.net/img/general/500x500/11449240_IgInJOEVwqZhbTA90Dx-M7S0Kmuz3bAGm_uiP5w3LFg.jpg'
-             }
-             })*/
         }
 
         function addReview(placeId, review) {
@@ -272,22 +251,9 @@ angular.module('app')
             return server.textSearch(queryString)
                 .then(_transformPlaces)
                 .catch(_logAndThrow);
-
-            //mock
-            // var places = [];
-            // for (var i = skip; i < skip + limit; i++) {
-            //     places.push({
-            //         id: 'mockId' + i,
-            //         name: 'Name' + i,
-            //         description: 'Desc'
-            //     })
-            // }
-            // return $timeout(angular.noop, 350).then(function () {
-            //     return places;
-            // })
         }
 
-        function filterSearch(params, limit, skip) {
+        function filterSearch(params) {
             return server.filterSearch({
                 city: params.city,
                 category: params.category,
@@ -296,18 +262,7 @@ angular.module('app')
                 m_rating: params.minRating
             }).then(_transformPlaces)
                 .catch(_logAndThrow);
-            //mock
-            /*var places = [];
-             for (var i = skip; i < skip + limit; i++) {
-             places.push({
-             id: 'mockId' + i,
-             name: 'Name' + i,
-             description: 'Desc'
-             })
-             }
-             return $timeout(angular.noop, 350).then(function () {
-             return places;
-             })*/
+
         }
 
         return {

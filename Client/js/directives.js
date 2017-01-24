@@ -26,13 +26,4 @@ angular.module('app')
                 }
             }
         }
-    })
-    .directive('placeListItemContent', function () {
-        return {
-            restrict: 'A',
-            templateUrl: 'html/directives/placeListItemContent.html',
-            scope: {
-                place: '=placeListItemContent'
-            }
-        }
-    })
+    });
