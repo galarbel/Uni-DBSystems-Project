@@ -106,7 +106,7 @@ angular.module('app')
                     $scope.fetching = false;
                     state.day = day;
                     if(!day.length){
-                        $scope.errToast("Can't find a day for you. Currently only US venues are available");
+                        $scope.errToast("Can't find a day for you. Try widening your search (Note: currently only US venues are available)");
                     }
                 })
                 .catch(function (err) {
