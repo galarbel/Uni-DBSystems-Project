@@ -237,6 +237,8 @@ angular.module('app')
                 .then(function (city) {
                     return {
                         name: city.city_name,
+                        state: city.state_code,
+                        country: city.country_name,
                         score: city.avg_score
                     }
                 })

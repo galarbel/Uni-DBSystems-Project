@@ -42,7 +42,8 @@
                 </md-card-title-text>
             </md-card-title>
             <md-card-content>
-                <strong style="font-size: 90px">{{city.name}}!</strong>
+                <p><strong style="font-size: 90px">{{city.name}}!</strong></p>
+                <p>{{city.state ? city.state + ',' : ''}} {{city.country}}</p>
             </md-card-content>
         </md-card>
     </div>
